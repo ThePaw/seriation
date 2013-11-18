@@ -1,0 +1,48 @@
+ĚěářŘíčšžČŠÉ
+
+
+cd /home/pac/live/ext/src/code.google.com/p/ser/cmd/ObjFnPerf/SA/objFns/all/raw/iR/50
+go build
+mv 50 ir50
+cd ../100
+go build
+mv 100 ir100
+cd ../150
+go build
+mv 150  ir150
+cd ../500
+go build
+mv 500  ir500
+
+cd /home/pac/live/ext/src/code.google.com/p/ser/cmd/ObjFnPerf/SA/objFns/all/impro/iR/50
+go build
+mv 50 ir50
+cd ../100
+go build
+mv 100 ir100
+cd ../150
+go build
+mv 150  ir150
+cd ../500
+go build
+mv 500  ir500
+===
+
+
+cd /home/pac/live/ext/src/code.google.com/p/ser/cmd/ObjFnPerf/SA/objFns/all/raw/iR/50
+./ir50 > 50
+cd ../100
+./ir100 > 100
+cd ../150
+./ir150 > 150
+cd ../500
+./ir500 > 500
+
+cd /home/pac/live/ext/src/code.google.com/p/ser/cmd/ObjFnPerf/SA/objFns/all/impro/iR/50
+./ir50 > 50
+cd ../100
+./ir100 > 100
+cd ../150
+./ir150 > 150
+cd ../500
+./ir500 > 500
