@@ -44,7 +44,8 @@ func TestObjFns(t *testing.T) {
 	fmt.Println("GeneralizedARLoss5: ", GeneralizedARLoss5(a, p))
 	fmt.Println("RelativeGARLoss5: ", RelativeGARLoss5(a, p))
 	fmt.Println("EffectivenessGain: ", EffectivenessGain(a, p))
-	fmt.Println("BertinGainDis: ", BertinLossDis(a, p))
-	fmt.Println("BertinGainDis: ", BertinLoss2(a, p, p))
+	fmt.Println("BertinLossSim: ", BertinLossSim(a, p))
+	fmt.Println("BertinLoss: ", BertinLoss(a, p, p))
+	fmt.Println("BertinLoss2: ", BertinLoss2(a, p, p))
 	fmt.Println("MEffGainDis: ", MEffGainDis(a, p))
 }

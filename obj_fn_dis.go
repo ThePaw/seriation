@@ -826,18 +826,6 @@ func RelativeGARLoss10(dis Matrix64, p IntVector) float64 {
 	return RelativeGARLoss(dis, p, w)
 }
 
-// BertinLossDis returns loss of the permuted matrix according to Kostopoulos & Goulermas
-func BertinLossDis(dis Matrix64, p IntVector) float64 {
-	if !dis.IsSymmetric() {
-		panic("distance matrix not symmetric")
-	}
-	n := p.Len()
-	if dis.Rows() != n {
-		panic("bad permutation vector length")
-	}
-	return BertinLoss(dis, p, p)
-}
-
 // MEffGainDis returns the measure of Effectiveness (McCormick 1972).
 func MEffGainDis(a Matrix64, p IntVector) float64 {
 	var x0, x1, x2, x3, x4 float64

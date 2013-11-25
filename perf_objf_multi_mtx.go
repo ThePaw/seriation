@@ -1,11 +1,11 @@
 package ser
 
 import (
+	"fmt"
 	"math"
 	"os"
-	"strings"
 	"strconv"
-	"fmt"
+	"strings"
 )
 
 func ObjFnPerformanceMultiMtx(path string, matDim int, objFn ObjFn, isLoss, isDistFn bool, optMethod, optMethodForImpro OptMethod3, impro, window, nIter int) (rhoH IntVector, rankH, pOH IntMatrix, rhoMean, rhoStDev, rProp, hitsProp float64) {
@@ -49,14 +49,14 @@ func ObjFnPerformanceMultiMtx(path string, matDim int, objFn ObjFn, isLoss, isDi
 		p.Perm()
 		//		a.ForceTo01()
 
-			// if objFn is similarity-based, convert matrix to distances
-			if !isDistFn {
-				a.SimToDist()
+		// if objFn is similarity-based, convert matrix to distances
+		if !isDistFn {
+			a.SimToDist()
 
-				fmt.Println("CONVERTED")
-			}
+			fmt.Println("CONVERTED")
+		}
 
-a.WriteCSV3()
+		a.WriteCSV3()
 		// solve for best permutation
 		optMethod(a, p, objFn, isLoss)
 
@@ -139,7 +139,6 @@ a.WriteCSV3()
 	return
 }
 
-
 func ObjFnPerformanceMultiMtxPerm(path string, matDim int, p IntVector, objFn ObjFn, isLoss, isDistFn bool, optMethod, optMethodForImpro OptMethod3, impro, window, nIter int) (rhoH IntVector, rankH, pOH IntMatrix, rhoMean, rhoStDev, rProp, hitsProp float64) {
 
 	// init
@@ -179,11 +178,10 @@ func ObjFnPerformanceMultiMtxPerm(path string, matDim int, p IntVector, objFn Ob
 		p.Perm()
 		//		a.ForceTo01()
 
-			// if objFn is similarity-based, convert matrix to distances
-			if !isDistFn {
-				a.SimToDist()
-			}
-
+		// if objFn is similarity-based, convert matrix to distances
+		if !isDistFn {
+			a.SimToDist()
+		}
 
 		// solve for best permutation
 		optMethod(a, p, objFn, isLoss)

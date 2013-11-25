@@ -198,7 +198,7 @@ func BertinLoss2(mtx Matrix64, rowPerm, colPerm IntVector) float64 {
 
 ///////////////////// Untested functions
 
-// BertinGain returns gain of the permuted matrix according to Kostopoulos & Goulermas
+// BertinGain returns 
 func BertinGain(mtx Matrix64, rowPerm, colPerm IntVector) float64 {
 	// B(A) of Pilhofer 2012: 2509, Eq. 1
 	n, m := mtx.Dims()
@@ -217,7 +217,6 @@ func BertinGain(mtx Matrix64, rowPerm, colPerm IntVector) float64 {
 	return sum
 }
 
-
 // BertinLoss returns loss of the permuted matrix according to Kostopoulos & Goulermas MATLAB code
 func BertinLoss(mtx Matrix64, rowPerm, colPerm IntVector) float64 {
 	n, m := mtx.Dims()
@@ -226,7 +225,7 @@ func BertinLoss(mtx Matrix64, rowPerm, colPerm IntVector) float64 {
 		for j := 0; j < m-1; j++ {
 			for k := 0; k <= i-1; k++ {
 				for l := j + 1; l < m; l++ {
-					sum += mtx[rowPerm[k]][colPerm[l]]* mtx[rowPerm[i]][colPerm[j]]
+					sum += mtx[rowPerm[k]][colPerm[l]] * mtx[rowPerm[i]][colPerm[j]]
 				}
 			}
 		}
