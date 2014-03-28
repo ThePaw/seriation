@@ -5,7 +5,6 @@ package ser
 // Objective (loss and gain) functions for distance (dissimilarity) matrices. 
 
 import (
-	//	"fmt"
 	"math"
 )
 
@@ -145,86 +144,6 @@ func HGain(dis Matrix64, p IntVector) float64 {
 // HNormGain returns gain of the permuted matrix according to Szczotka 1972; see Brusco et al. 2008: 507-508, Eq. 7.
 // TO BE IMPLEMENTED
 
-// StrengLossW returns a count of Anti-Robinson events (Streng and Schoenfelder 1978; Streng 1991; Chen 2002:21).
-func StrengLossW(dis Matrix64, p IntVector, which int) float64 {
-	//which indicates the weighing scheme
-	// 1 ... no weighting (i)
-	// 2 ... abs. deviations (s)
-	// 3 ... weighted abs. deviations (w)
-
-	if !dis.IsSymmetric() {
-		panic("distance matrix not symmetric")
-	}
-	n := p.Len()
-	if dis.Rows() != n {
-		panic("bad permutation vector length")
-	}
-
-	sum := 0.0
-	for i := 0; i < n; i++ {
-		for j := 0; j < n; j++ {
-			d_ij := dis[p[i]][p[j]]
-			for k := 0; k < n; k++ {
-				d_ik := dis[p[i]][p[k]]
-				if j < k && k < i {
-					if d_ij < d_ik {
-
-						switch which {
-						case 1:
-							sum++
-						case 2:
-							sum += math.Abs(d_ij - d_ik)
-						case 3:
-							sum += math.Abs(float64(p[j]-p[k])) * math.Abs(d_ij-d_ik)
-						}
-
-					}
-				}
-			}
-		}
-	}
-
-	for i := 0; i < n; i++ {
-		for j := 0; j < n; j++ {
-			d_ij := dis[p[i]][p[j]]
-			for k := 0; k < n; k++ {
-				d_ik := dis[p[i]][p[k]]
-				if i < j && j < k {
-
-					if d_ij > d_ik {
-
-						switch which {
-						case 1:
-							sum++
-						case 2:
-							sum += math.Abs(d_ij - d_ik)
-						case 3:
-							sum += math.Abs(float64(p[j]-p[k])) * math.Abs(d_ij-d_ik)
-						}
-
-					}
-				}
-			}
-		}
-	}
-	return sum
-}
-
-// StrengLoss1 returns a count of Anti-Robinson events, no weighting (Streng and Schoenfelder 1978; Chen 2002:21).(also Wu 2010: 773)
-func StrengLoss1(dis Matrix64, p IntVector) float64 {
-	return StrengLossW(dis, p, 1)
-}
-
-// StrengLoss2 returns a count of Anti-Robinson events, weighted by abs. deviations (Streng and Schoenfelder 1978; Chen 2002:21).
-func StrengLoss2(dis Matrix64, p IntVector) float64 {
-	return StrengLossW(dis, p, 2)
-}
-
-// StrengLoss3 returns a count of Anti-Robinson events, weighted by weighted abs. deviations (Streng and Schoenfelder 1978; Chen 2002:21).
-func StrengLoss3(dis Matrix64, p IntVector) float64 {
-	return StrengLossW(dis, p, 3)
-}
-
 // InertiaGain returns the Inertia criterion (Caraux and Pinloche 2005).
 func InertiaGain(dis Matrix64, p IntVector) float64 {
 	if !dis.IsSymmetric() {
@@ -285,84 +204,40 @@ func GARLoss(dis Matrix64, p IntVector, w int) float64 {
 	if dis.Rows() != n {
 		panic("bad permutation vector length")
 	}
-
-	sum := 0.0
-	for i := 0; i < n; i++ {
-		for j := 0; j < n; j++ {
-			dij := dis[p[i]][p[j]]
-			for k := 0; k < n; k++ {
-				dik := dis[p[i]][p[k]]
-				if (i-w) <= j && j < k && k < i && dij < dik {
-					sum++
-				}
-			}
-		}
-	}
-	for i := 0; i < n; i++ {
-		for j := 0; j < n; j++ {
-			dij := dis[p[i]][p[j]]
-			for k := 0; k < n; k++ {
-				dik := dis[p[i]][p[k]]
-				if i < j && j < k && k <= (i+w) && dij > dik {
-					sum++
-				}
-			}
-		}
-	}
-	return sum
-}
-*/
-
-// GARLoss returns the generalized anti-Robinson loss function for a distance matrix GAR(w) (Wu 2010: 773) .
-func GARLoss(dis Matrix64, p IntVector, w int) float64 {
-	if !dis.IsSymmetric() {
-		panic("distance matrix not symmetric")
-	}
-	n := p.Len()
-	if dis.Rows() != n {
-		panic("bad permutation vector length")
-	}
 	if w == 0 || w == 1 {
 		return 0
 	}
 	sum := 0.0
 
-	for i := 0; i < n; i++ {
-		imw := i - w
-		if imw < 0 {
-			imw = 0
-		}
-
-		for j := imw; j < i; j++ {
+	for i := w; i < n; i++ {
+		for j := i - w; j < i; j++ {
 			dij := dis[p[i]][p[j]]
 
 			for k := j + 1; k < i; k++ {
+if i-w <= j &&  j< k && k < i {
 				dik := dis[p[i]][p[k]]
 				if dij < dik {
 					sum++
 				}
-			}
+			}}
 		}
 
-		ipw := i + w
-		if ipw >= n {
-			ipw = n - 1
-		}
 
-		for j := i + 1; j <= ipw; j++ {
+		for j := i + 1; j < i+w && j < n; j++ {
 			dij := dis[p[i]][p[j]]
 
-			for k := j + 1; k < ipw; k++ {
+			for k := j + 1; k <= i+w && k< n; k++ {
+if i< j && j<k && k <=  i + w   {
 				dik := dis[p[i]][p[k]]
 				if dij > dik {
 					sum++
 				}
-			}
+			}}
 		}
 	}
 	return sum
 }
-
+*/
 // RGARLoss returns the relative generalized anti-Robinson loss function for a distance matrix RGAR(w)  (Wu 2010: 773) .
 func RGARLoss(dis Matrix64, p IntVector, w int) float64 {
 	if !dis.IsSymmetric() {
@@ -374,26 +249,26 @@ func RGARLoss(dis Matrix64, p IntVector, w int) float64 {
 	}
 
 	gar := GARLoss(dis, p, w)
-	sum := 0.0
-	for i := 0; i < n; i++ {
-		for j := 0; j < n; j++ {
-			for k := 0; k < n; k++ {
-				if (i-w) <= j && j < k && k < i {
-					sum++
+	c:=0.0
+	for j := 0; j < n; j++ {
+		for k := j + 1; k < n; k++ {
+			for i := k + 1; i < n; i++ {
+				if i-w <= j && j < k && k < i {
+					c ++
 				}
 			}
 		}
 	}
 	for i := 0; i < n; i++ {
-		for j := 0; j < n; j++ {
-			for k := 0; k < n; k++ {
+		for j := i + 1; j < n; j++ {
+			for k := j + 1; k < n; k++ {
 				if i < j && j < k && k <= i+w {
-					sum++
+					c ++
 				}
 			}
 		}
 	}
-	return gar / sum
+	return gar / c
 }
 
 func GARLoss5(dis Matrix64, p IntVector) float64 {
@@ -404,12 +279,20 @@ func GARLoss10(dis Matrix64, p IntVector) float64 {
 	return GARLoss(dis, p, 10)
 }
 
+func GARLoss15(dis Matrix64, p IntVector) float64 {
+	return GARLoss(dis, p, 55)
+}
+
 func RGARLoss5(dis Matrix64, p IntVector) float64 {
 	return RGARLoss(dis, p, 5)
 }
 
 func RGARLoss10(dis Matrix64, p IntVector) float64 {
 	return RGARLoss(dis, p, 10)
+}
+
+func RGARLoss15(dis Matrix64, p IntVector) float64 {
+	return RGARLoss(dis, p, 55)
 }
 
 // HamiltonLoss returns the length of the shortest Hamiltonian path (openTSP).
@@ -731,7 +614,7 @@ func WeightedAREventsViolationLoss(dis Matrix64, p IntVector) float64 {
 	return c
 }
 
-// DoublyWeightedAREventsViolationLoss returns gain of the permuted matrix according to Kostopoulos & Goulermas
+// DoublyWeightedAREventsViolationLoss returns loss of the permuted matrix according to Kostopoulos & Goulermas
 func DoublyWeightedAREventsViolationLoss(dis Matrix64, p IntVector) float64 {
 	if !dis.IsSymmetric() {
 		panic("distance matrix not symmetric")
@@ -765,65 +648,6 @@ func DoublyWeightedAREventsViolationLoss(dis Matrix64, p IntVector) float64 {
 		}
 	}
 	return c
-}
-
-// GeneralizedARLoss returns loss of the permuted matrix according to Kostopoulos & Goulermas
-func GeneralizedARLoss(dis Matrix64, p IntVector, w int) float64 {
-	if !dis.IsSymmetric() {
-		panic("distance matrix not symmetric")
-	}
-	n := p.Len()
-	if dis.Rows() != n {
-		panic("bad permutation vector length")
-	}
-
-	sum := 0.0
-	for i := 0; i < n; i++ {
-		for j := i + w; j < n; j++ {
-			for k := i + 1; k < j; k++ {
-				x := dis[p[i]][p[k]]
-				y := dis[p[i]][p[j]]
-				sum += g(x, y)
-				x = dis[p[k]][p[j]]
-				y = dis[p[i]][p[j]]
-				sum += g(x, y)
-
-			}
-		}
-	}
-	return sum
-}
-
-// GeneralizedARLoss5 returns loss of the permuted matrix with window = 5 according to Kostopoulos & Goulermas
-func GeneralizedARLoss5(dis Matrix64, p IntVector) float64 {
-	w := 5
-	return GeneralizedARLoss(dis, p, w)
-}
-
-// GeneralizedARLoss10 returns loss of the permuted matrix with window = 10 according to Kostopoulos & Goulermas
-func GeneralizedARLoss10(dis Matrix64, p IntVector) float64 {
-	w := 10
-	return GeneralizedARLoss(dis, p, w)
-}
-
-// RelativeGARLoss returns loss of the permuted matrix according to Kostopoulos & Goulermas
-func RelativeGARLoss(dis Matrix64, p IntVector, w int) float64 {
-	c := GeneralizedARLoss(dis, p, w)
-	n := float64(dis.Rows())
-	v := float64(w)
-	return c / (n*v*(v-1) - 2*v*(1-v*v)/3)
-}
-
-// RelativeGARLoss5 returns loss of the permuted matrix with window = 5 according to Kostopoulos & Goulermas
-func RelativeGARLoss5(dis Matrix64, p IntVector) float64 {
-	w := 5
-	return RelativeGARLoss(dis, p, w)
-}
-
-// RelativeGARLoss10 returns loss of the permuted matrix with window = 10 according to Kostopoulos & Goulermas
-func RelativeGARLoss10(dis Matrix64, p IntVector) float64 {
-	w := 10
-	return RelativeGARLoss(dis, p, w)
 }
 
 // MEffGainDis returns the measure of Effectiveness (McCormick 1972).
@@ -866,10 +690,8 @@ func MEffGainDis(a Matrix64, p IntVector) float64 {
 	return gain / 2
 }
 
-// Duplicated functions
-
-// QAPGain returns gain of the permuted matrix according to Brusco 2000: 201, Eq. 5. (==HGain)
-func QAPGain(dis Matrix64, p IntVector) float64 {
+// GARLoss returns gain of the permuted matrix according to Kostopoulos & Goulermas
+func GARLoss(dis Matrix64, p IntVector, w int) float64 {
 	if !dis.IsSymmetric() {
 		panic("distance matrix not symmetric")
 	}
@@ -879,120 +701,27 @@ func QAPGain(dis Matrix64, p IntVector) float64 {
 	}
 
 	c := 0.0
-	for i := 1; i < n; i++ {
-		for j := 0; j < i; j++ {
-			d := math.Abs(float64(i - j))
-			x := dis[p[i]][p[j]]
-			c += d * x
-		}
-	}
-	return c
-}
-
-// CompatibilityGain returns gain of the permuted matrix according to Kostopoulos & Goulermas (==G2Gain)
-func CompatibilityGain(dis Matrix64, p IntVector) float64 {
-	if !dis.IsSymmetric() {
-		panic("distance matrix not symmetric")
-	}
-	n := p.Len()
-	if dis.Rows() != n {
-		panic("bad permutation vector length")
-	}
-
-	c := 0.0
-	for i := 0; i < n-2; i++ {
-		for j := i + 2; j < n; j++ {
-			for k := i + 1; k < j; k++ {
-				x := dis[p[i]][p[k]]
-				y := dis[p[i]][p[j]]
-				c += f(x, y)
+	for j := 0; j < n; j++ {
+		for k := j + 1; k < n; k++ {
+			for i := k + 1; i < n; i++ {
+				if i-w <= j && j < k && k < i {
+					x := dis[p[i]][p[k]]
+					y := dis[p[i]][p[j]]
+					c += g(x, y)
+				}
 			}
 		}
 	}
-	for i := 0; i < n-2; i++ {
-		for j := i + 2; j < n; j++ {
-			for k := i + 1; k < j; k++ {
-				x := dis[p[k]][p[j]]
-				y := dis[p[i]][p[j]]
-				c += f(x, y)
-			}
-		}
-	}
-	return c
-}
-
-// WeightedCompatibilityGain returns gain of the permuted matrix according to Kostopoulos & Goulermas (==G4Gain)
-func WeightedCompatibilityGain(dis Matrix64, p IntVector) float64 {
-	if !dis.IsSymmetric() {
-		panic("distance matrix not symmetric")
-	}
-	n := p.Len()
-	if dis.Rows() != n {
-		panic("bad permutation vector length")
-	}
-
-	c := 0.0
-	for i := 0; i < n-2; i++ {
-		for j := i + 2; j < n; j++ {
-			for k := i + 1; k < j; k++ {
-				x := dis[p[i]][p[k]]
-				y := dis[p[i]][p[j]]
-				d := math.Abs(x - y)
-				c += d * f(x, y)
-			}
-		}
-	}
-	for i := 0; i < n-2; i++ {
-		for j := i + 2; j < n; j++ {
-			for k := i + 1; k < j; k++ {
-				x := dis[p[k]][p[j]]
-				y := dis[p[i]][p[j]]
-				d := math.Abs(x - y)
-				c += d * f(x, y)
-			}
-		}
-	}
-	return c
-}
-
-// EffectivenessGain returns gain of the permuted matrix according to Kostopoulos & Goulermas(==MEffGainDis)
-func EffectivenessGain(dis Matrix64, p IntVector) float64 {
-	var a, b, c, d, e float64
-	if !dis.IsSymmetric() {
-		panic("distance matrix not symmetric")
-	}
-	n := p.Len()
-	if dis.Rows() != n {
-		panic("bad permutation vector length")
-	}
-	sum := 0.0
 	for i := 0; i < n; i++ {
-		for j := 0; j < n; j++ {
-			if j > n-2 {
-				a = 0
-			} else {
-				a = dis[p[i]][p[j+1]]
+		for j := i + 1; j < n; j++ {
+			for k := j + 1; k < n; k++ {
+				if i < j && j < k && k <= i+w {
+					x := dis[p[k]][p[j]]
+					y := dis[p[i]][p[j]]
+					c += g(x, y)
+				}
 			}
-			if j == 0 {
-				b = 0
-			} else {
-				b = dis[p[i]][p[j-1]]
-			}
-
-			if i > n-2 {
-				c = 0
-			} else {
-				c = dis[p[i+1]][p[j]]
-			}
-			if i == 0 {
-				d = 0
-			} else {
-
-				d = dis[p[i-1]][p[j]]
-			}
-			e = dis[p[i]][p[j]]
-			sum += e * (a + b + c + d)
 		}
 	}
-	return sum / 2
+	return c
 }

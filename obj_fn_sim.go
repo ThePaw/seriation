@@ -43,4 +43,3 @@ func BertinLossSim(sim Matrix64, p IntVector) float64 {
 	}
 	return BertinLoss(sim, p, p)
 }
-
