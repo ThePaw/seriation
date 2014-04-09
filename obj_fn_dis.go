@@ -194,50 +194,7 @@ func VonNeumannStressDisLoss(dis Matrix64, p IntVector) float64 {
 	return VonNeumannStressLoss(dis, p, p)
 }
 
-/*
-// GARLoss returns the generalized anti-Robinson loss function for a distance matrix GAR(w) (Wu 2010: 773) .
-func GARLoss(dis Matrix64, p IntVector, w int) float64 {
-	if !dis.IsSymmetric() {
-		panic("distance matrix not symmetric")
-	}
-	n := p.Len()
-	if dis.Rows() != n {
-		panic("bad permutation vector length")
-	}
-	if w == 0 || w == 1 {
-		return 0
-	}
-	sum := 0.0
 
-	for i := w; i < n; i++ {
-		for j := i - w; j < i; j++ {
-			dij := dis[p[i]][p[j]]
-
-			for k := j + 1; k < i; k++ {
-if i-w <= j &&  j< k && k < i {
-				dik := dis[p[i]][p[k]]
-				if dij < dik {
-					sum++
-				}
-			}}
-		}
-
-
-		for j := i + 1; j < i+w && j < n; j++ {
-			dij := dis[p[i]][p[j]]
-
-			for k := j + 1; k <= i+w && k< n; k++ {
-if i< j && j<k && k <=  i + w   {
-				dik := dis[p[i]][p[k]]
-				if dij > dik {
-					sum++
-				}
-			}}
-		}
-	}
-	return sum
-}
-*/
 // RGARLoss returns the relative generalized anti-Robinson loss function for a distance matrix RGAR(w)  (Wu 2010: 773) .
 func RGARLoss(dis Matrix64, p IntVector, w int) float64 {
 	if !dis.IsSymmetric() {
@@ -249,26 +206,29 @@ func RGARLoss(dis Matrix64, p IntVector, w int) float64 {
 	}
 
 	gar := GARLoss(dis, p, w)
-	c:=0.0
-	for j := 0; j < n; j++ {
-		for k := j + 1; k < n; k++ {
-			for i := k + 1; i < n; i++ {
-				if i-w <= j && j < k && k < i {
-					c ++
-				}
-			}
-		}
-	}
-	for i := 0; i < n; i++ {
-		for j := i + 1; j < n; j++ {
+	/*
+		c:=0.0
+		for j := 0; j < n; j++ {
 			for k := j + 1; k < n; k++ {
-				if i < j && j < k && k <= i+w {
-					c ++
+				for i := k + 1; i < n; i++ {
+					if i-w <= j && j < k && k < i {
+						c ++
+					}
 				}
 			}
 		}
-	}
-	return gar / c
+		for i := 0; i < n; i++ {
+			for j := i + 1; j < n; j++ {
+				for k := j + 1; k < n; k++ {
+					if i < j && j < k && k <= i+w {
+						c ++
+					}
+				}
+			}
+		}
+	*/
+	return gar / (float64(n*w*(w-1)) - 2*float64(w)*float64(w*w-1)/3)
+
 }
 
 func GARLoss5(dis Matrix64, p IntVector) float64 {
@@ -279,9 +239,43 @@ func GARLoss10(dis Matrix64, p IntVector) float64 {
 	return GARLoss(dis, p, 10)
 }
 
-func GARLoss15(dis Matrix64, p IntVector) float64 {
-	return GARLoss(dis, p, 55)
+func GARLoss12(dis Matrix64, p IntVector) float64 {
+	return GARLoss(dis, p, 12)
 }
+
+func GARLoss15(dis Matrix64, p IntVector) float64 {
+	return GARLoss(dis, p, 15)
+}
+
+func GARLoss25(dis Matrix64, p IntVector) float64 {
+	return GARLoss(dis, p, 25)
+}
+
+func GARLoss37(dis Matrix64, p IntVector) float64 {
+	return GARLoss(dis, p, 37)
+}
+
+func GARLoss50(dis Matrix64, p IntVector) float64 {
+	return GARLoss(dis, p, 50)
+}
+
+func GARLoss75(dis Matrix64, p IntVector) float64 {
+	return GARLoss(dis, p, 75)
+}
+
+func GARLoss112(dis Matrix64, p IntVector) float64 {
+	return GARLoss(dis, p, 112)
+}
+
+func GARLoss125(dis Matrix64, p IntVector) float64 {
+	return GARLoss(dis, p, 125)
+}
+
+func GARLoss187(dis Matrix64, p IntVector) float64 {
+	return GARLoss(dis, p, 187)
+}
+
+
 
 func RGARLoss5(dis Matrix64, p IntVector) float64 {
 	return RGARLoss(dis, p, 5)
@@ -291,9 +285,43 @@ func RGARLoss10(dis Matrix64, p IntVector) float64 {
 	return RGARLoss(dis, p, 10)
 }
 
-func RGARLoss15(dis Matrix64, p IntVector) float64 {
-	return RGARLoss(dis, p, 55)
+func RGARLoss12(dis Matrix64, p IntVector) float64 {
+	return RGARLoss(dis, p, 12)
 }
+
+func RGARLoss15(dis Matrix64, p IntVector) float64 {
+	return RGARLoss(dis, p, 15)
+}
+
+func RGARLoss25(dis Matrix64, p IntVector) float64 {
+	return RGARLoss(dis, p, 25)
+}
+
+func RGARLoss37(dis Matrix64, p IntVector) float64 {
+	return RGARLoss(dis, p, 37)
+}
+
+func RGARLoss50(dis Matrix64, p IntVector) float64 {
+	return RGARLoss(dis, p, 50)
+}
+
+
+func RGARLoss75(dis Matrix64, p IntVector) float64 {
+	return RGARLoss(dis, p, 75)
+}
+
+func RGARLoss112(dis Matrix64, p IntVector) float64 {
+	return RGARLoss(dis, p, 112)
+}
+
+func RGARLoss125(dis Matrix64, p IntVector) float64 {
+	return RGARLoss(dis, p, 125)
+}
+
+func RGARLoss187(dis Matrix64, p IntVector) float64 {
+	return RGARLoss(dis, p, 187)
+}
+
 
 // HamiltonLoss returns the length of the shortest Hamiltonian path (openTSP).
 func HamiltonLoss(dis Matrix64, p IntVector) float64 {
@@ -383,7 +411,7 @@ func parabolaFit(v Vector64) (c1, c2, c3 float64, err bool) {
 	return
 }
 
-// ParabolaLoss returns the su of squared residues of fitted parabola.
+// ParabolaLoss returns the sum of squared residues of fitted parabola.
 func ParabolaLoss(sim Matrix64, p IntVector) float64 {
 	if !sim.IsSymmetric() {
 		panic("similarity matrix not symmetric")
@@ -548,7 +576,7 @@ func AREventsViolationLoss(dis Matrix64, p IntVector) float64 {
 }
 */
 
-// AREventsViolationLoss returns gain of the permuted matrix according to Kostopoulos & Goulermas
+// AREventsViolationLoss returns loss of the permuted matrix according to Kostopoulos & Goulermas
 func AREventsViolationLoss(dis Matrix64, p IntVector) float64 {
 	if !dis.IsSymmetric() {
 		panic("distance matrix not symmetric")
@@ -690,6 +718,7 @@ func MEffGainDis(a Matrix64, p IntVector) float64 {
 	return gain / 2
 }
 
+/*
 // GARLoss returns gain of the permuted matrix according to Kostopoulos & Goulermas
 func GARLoss(dis Matrix64, p IntVector, w int) float64 {
 	if !dis.IsSymmetric() {
@@ -724,4 +753,41 @@ func GARLoss(dis Matrix64, p IntVector, w int) float64 {
 		}
 	}
 	return c
+}
+
+*/
+// GARLoss returns the generalized anti-Robinson loss function for a distance matrix GAR(w) (Wu 2010: 773) .
+func GARLoss(dis Matrix64, p IntVector, w int) float64 {
+	if !dis.IsSymmetric() {
+		panic("distance matrix not symmetric")
+	}
+	n := p.Len()
+	if dis.Rows() != n {
+		panic("bad permutation vector length")
+	}
+
+	sum := 0.0
+	for j := 0; j < n; j++ {
+		for k := 0; k < j; k++ {
+			for i := j - w; i < k; i++ {
+				if i >= 0 {
+					dik := dis[p[i]][p[k]]
+					dij := dis[p[i]][p[j]]
+					sum += g(dik, dij)
+				}
+			}
+		}
+	}
+	for j := 0; j < n; j++ {
+		for k := 0; k < j; k++ {
+			for i := j - w; i < k; i++ {
+				if i >= 0 {
+					dkj := dis[p[k]][p[j]]
+					dij := dis[p[i]][p[j]]
+					sum += g(dkj, dij)
+				}
+			}
+		}
+	}
+	return sum
 }

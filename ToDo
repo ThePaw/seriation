@@ -1,4 +1,7 @@
-Recalc my GAR, RGAR !!!
+run G4-500 on lisal
+
+Check and recalc old pre+impro!!!
+
 !! Implement proportion of pair rank order  !!
 +++++++++++++++++++++++++++++++++++++++
 Check against original formulas, ask for peer-revision
@@ -32,7 +35,7 @@ rewrite Sampler type
 implement P-Q trees
 
 == in progress
-[cejchan@lisal-nvidia ~]
+[cejchan@lisal-nvidia ~]Are500 on lisal
 
 == done.
 Raw (R, IR) is done!
@@ -74,6 +77,8 @@ GAR on kangaroo2
 H, Ine, Lsq on IR
 [cejchan@lisal-nvidia ~] Rimpro500
 pac@wagga-wagga:~/II50
+Results of  GAR, RGAR into 20 spreadsheet
+
 
 == beyond my skills
 rewrite FA with mutators
