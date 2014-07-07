@@ -48,9 +48,9 @@ func SubMatOpt(dis Matrix64, p IntVector, v int, objFn ObjFn, isLoss bool, optMe
 				oldCost = -oldCost
 			}
 
-			cost = optMethod(q, d, objFn, isLoss) // cost inverted inside if !isLoss 
+			cost = optMethod(q, d, objFn, isLoss) // cost inverted inside if !isLoss
 
-			// Step 1d  +  1e 
+			// Step 1d  +  1e
 			if cost < oldCost {
 				oldCost = cost
 				improved = true

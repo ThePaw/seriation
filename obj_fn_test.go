@@ -74,7 +74,7 @@ func TestCosts(t *testing.T) {
 		fmt.Println("matrix is not symmetric")
 	}
 
-// Tests against Kostopoulos & Goulermas (2014)
+	// Tests against Kostopoulos & Goulermas (2014)
 
 	fmt.Println("Test of objective functions")
 	hp := 30.1050

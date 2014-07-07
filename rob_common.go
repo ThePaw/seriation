@@ -13,8 +13,8 @@ func robDelta(a Matrix64, p IntVector, r, s int, objFn ObjFn) float64 {
 	return d1 - d0
 }
 
-// Local search: Scan the neighbourhood at most twice. 
-// Perform improvements as soon as they are found. 
+// Local search: Scan the neighbourhood at most twice.
+// Perform improvements as soon as they are found.
 func robLocalSearch(a Matrix64, p IntVector, cost *float64, objFn ObjFn, isLoss bool) {
 	// set of moves, numbered from 0 to index
 	n := p.Len()

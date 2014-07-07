@@ -2,7 +2,7 @@
 
 package ser
 
-// Sort the pre-(Anti)-Robinson matrix using the Fast ant system. 
+// Sort the pre-(Anti)-Robinson matrix using the Fast ant system.
 // E. D. Taillard 1998. "FANT: Fast ant system.  Technical report IDSIA-46-98, IDSIA, Lugano.
 // Use functions in obj_fn_sim.go for Robinson, obj_fn_dis.go for Anti-Robinson matrix.
 
@@ -10,7 +10,7 @@ import (
 	"math"
 )
 
-// RobFAnt  sorts the pre-Anti-Robinson matrix using the Fast ant system, single trial. 
+// RobFAnt  sorts the pre-Anti-Robinson matrix using the Fast ant system, single trial.
 func RobFAnt(a Matrix64, p IntVector, objFn ObjFn, isLoss bool, r float64, improLagMax int) float64 {
 	var inc, c, cost float64
 	n := p.Len()
@@ -45,7 +45,7 @@ func RobFAnt(a Matrix64, p IntVector, objFn ObjFn, isLoss bool, r float64, impro
 	return cost
 }
 
-// RobFAntK sorts the pre-(Anti)-Robinson matrix using the Fast Ant System, in k trials. 
+// RobFAntK sorts the pre-(Anti)-Robinson matrix using the Fast Ant System, in k trials.
 func RobFAntK(sim Matrix64, objFn ObjFn, isLoss bool, trials, improLagMax int, r float64) (cost float64, best IntVector) {
 	if isLoss {
 		cost = math.Inf(1)
@@ -66,7 +66,7 @@ func RobFAntK(sim Matrix64, objFn ObjFn, isLoss bool, trials, improLagMax int, r
 	return
 }
 
-// RobFA sorts the pre-(Anti)-Robinson matrix using the Fast Ant System, in k trials. 
+// RobFA sorts the pre-(Anti)-Robinson matrix using the Fast Ant System, in k trials.
 func RobFA(sim Matrix64, objFn ObjFn, isLoss bool) (cost float64, best IntVector) {
 	improLagMax := 200
 	r := 5.0
@@ -84,7 +84,7 @@ func RobFA2(sim Matrix64, p IntVector, objFn ObjFn, isLoss bool) (cost float64, 
 	return RobFAntK2(sim, p, objFn, isLoss, trials, improLagMax, r)
 }
 
-// RobFAntK2 sorts the pre-(Anti)-Robinson matrix using the Fast Ant System, in k trials. 
+// RobFAntK2 sorts the pre-(Anti)-Robinson matrix using the Fast Ant System, in k trials.
 func RobFAntK2(sim Matrix64, p IntVector, objFn ObjFn, isLoss bool, trials, improLagMax int, r float64) (cost float64, best IntVector) {
 	if isLoss {
 		cost = math.Inf(1)
@@ -111,7 +111,7 @@ func RobFA3(sim Matrix64, p IntVector, objFn ObjFn, isLoss bool) (cost float64) 
 	return RobFAntK3(sim, p, objFn, isLoss, trials, improLagMax, r)
 }
 
-// RobFAntK3 sorts the pre-(Anti)-Robinson matrix using the Fast Ant System, in k trials. 
+// RobFAntK3 sorts the pre-(Anti)-Robinson matrix using the Fast Ant System, in k trials.
 func RobFAntK3(sim Matrix64, p IntVector, objFn ObjFn, isLoss bool, trials, improLagMax int, r float64) (cost float64) {
 	if isLoss {
 		cost = math.Inf(1)

@@ -5,8 +5,10 @@ package ser
 // Some handy functions.
 
 import (
+	"fmt"
 	"math"
 	"math/rand"
+	"syscall"
 )
 
 const iInf int = math.MaxInt32
@@ -330,7 +332,7 @@ func compareFloat64(a, b float64) bool {
 // fact returns the factorial of an int
 func fact(n int) int {
 	if n < 0 {
-		panic("factorial not defined for negative numbers")
+		panic("factorial is not defined for negative numbers")
 	}
 	if n == 0 {
 		return 1
@@ -340,4 +342,16 @@ func fact(n int) int {
 		f *= f
 	}
 	return f
+}
+
+// ProcessTimes returns CPU usage time of the process
+func ProcessTimes() (user, system float64, size uint64) {
+	var usage syscall.Rusage
+	if err := syscall.Getrusage(syscall.RUSAGE_SELF, &usage); err != nil {
+		fmt.Printf("Error: unable to gather resource usage data: %v\n", err)
+	}
+	user = float64(usage.Utime.Sec) + float64(usage.Utime.Usec)/1e6
+	system = float64(usage.Stime.Sec) + float64(usage.Stime.Usec)/1e6
+	size = uint64(uint32(usage.Maxrss))
+	return
 }

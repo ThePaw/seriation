@@ -10,13 +10,13 @@ import (
 	"math"
 	"math/rand"
 
-//	"time"
+	//	"time"
 )
 
 type GenFn func(p IntVector)        // Generates a new solution from an old one
 type CoolFn func(x float64) float64 // Cooling schedule: Generates a new temperature from the previous one.
 //                  Any function that takes a scalar as input and
-//                  returns a smaller but positive scalar as output. 
+//                  returns a smaller but positive scalar as output.
 
 func cool(x float64) float64 {
 	return 0.8 * x
@@ -36,7 +36,7 @@ func SimAnn(a Matrix64, loss ObjFn, isLoss bool, proposePerm GenFn, cool CoolFn)
 	// params
 	initT := 1.0 // The initial temperature, can be any positive number.
 	minT := 1e-8 // Temperature at which to stop, can be any positive number
-	//                  smaller than initT. 
+	//                  smaller than initT.
 	stopVal := -inf //Value at which to stop immediately, can be any output of
 	//                  loss fn that is sufficiently low for you.
 	maxConsRej := 1000 // Maximum number of consecutive rejections, can be any
@@ -139,7 +139,7 @@ func SimAnn2(a Matrix64, initialSolution IntVector, loss ObjFn, isLoss bool, pro
 	// params
 	initT := 1.0 // The initial temperature, can be any positive number.
 	minT := 1e-8 // Temperature at which to stop, can be any positive number
-	//                  smaller than initT. 
+	//                  smaller than initT.
 	stopVal := -inf //Value at which to stop immediately, can be any output of
 	//                  loss fn that is sufficiently low for you.
 	maxConsRej := 1000 // Maximum number of consecutive rejections, can be any
@@ -240,7 +240,7 @@ func SimAnn3(a Matrix64, p IntVector, loss ObjFn, isLoss bool, proposePerm GenFn
 	// params
 	initT := 1.0 // The initial temperature, can be any positive number.
 	minT := 1e-8 // Temperature at which to stop, can be any positive number
-	//                  smaller than initT. 
+	//                  smaller than initT.
 	stopVal := -inf //Value at which to stop immediately, can be any output of
 	//                  loss fn that is sufficiently low for you.
 	maxConsRej := 1000 // Maximum number of consecutive rejections, can be any

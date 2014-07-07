@@ -83,4 +83,3 @@ func Moed2(a Matrix64, p IntVector) float64 {
 	}
 	return gain / 2
 }
-

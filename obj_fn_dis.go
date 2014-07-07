@@ -273,6 +273,10 @@ func Gar187(dis Matrix64, p IntVector) float64 {
 	return Gar(dis, p, 187)
 }
 
+func Gar375(dis Matrix64, p IntVector) float64 {
+	return Gar(dis, p, 375)
+}
+
 // RGARLoss returns the relative generalized anti-Robinson loss function for a distance matrix RGAR(w)  (Wu 2010: 773) .
 func Rgar(dis Matrix64, p IntVector, w int) float64 {
 	if !dis.IsSymmetric() {
@@ -550,7 +554,6 @@ func Par(sim Matrix64, p IntVector) float64 {
 	return loss
 }
 
-
 // AREventsViolationLoss returns loss of the permuted matrix according to Kostopoulos & Goulermas
 func Are(dis Matrix64, p IntVector) float64 {
 	if !dis.IsSymmetric() {
@@ -652,5 +655,3 @@ func Dware(dis Matrix64, p IntVector) float64 {
 	}
 	return c
 }
-
-
