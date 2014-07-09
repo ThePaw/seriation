@@ -1,0 +1,21 @@
+#!/bin/sh
+./perf -m R500.csv -o Are > R500Are.out
+#./perf -m R500.csv -o Bers > R500Bers.out
+./perf -m R500.csv -o Dware > R500Dware.out
+./perf -m R500.csv -o Gar250 > R500Gar250.out
+./perf -m R500.csv -o Gar375 > R500Gar375.out
+./perf -m R500.csv -o H > R500H.out
+./perf -m R500.csv -o Ham > R500Ham.out
+./perf -m R500.csv -o Ine > R500Ine.out
+./perf -m R500.csv -o Lsq > R500Lsq.out
+./perf -m R500.csv -o Msd > R500Msd.out
+./perf -m R500.csv -o Nsd > R500Nsd.out
+./perf -m R500.csv -o Par > R500Par.out
+./perf -m R500.csv -o Psis > R500Psis.out
+./perf -m R500.csv -o Rgar250 > R500Rgar250.out
+./perf -m R500.csv -o Rgar375 > R500Rgar375.out
+./perf -m R500.csv -o Ware > R500Ware.out
+./perf -m R500.csv -o Wrcug > R500Wrcug.out
+./perf -m R500.csv -o Wrcwg > R500Wrcwg.out
+./perf -m R500.csv -o Wrug > R500Wrug.out
+./perf -m R500.csv -o Wrwg > R500Wrwg.out

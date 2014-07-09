@@ -1,0 +1,21 @@
+#!/bin/sh
+./perf -m I150.csv -o Are > I150Are.out
+./perf -m I150.csv -o Bers > I150Bers.out
+./perf -m I150.csv -o Dware > I150Dware.out
+./perf -m I150.csv -o Gar75 > I150Gar75.out
+./perf -m I150.csv -o Gar112 > I150Gar112.out
+./perf -m I150.csv -o H > I150H.out
+./perf -m I150.csv -o Ham > I150Ham.out
+./perf -m I150.csv -o Ine > I150Ine.out
+./perf -m I150.csv -o Lsq > I150Lsq.out
+./perf -m I150.csv -o Msd > I150Msd.out
+./perf -m I150.csv -o Nsd > I150Nsd.out
+./perf -m I150.csv -o Par > I150Par.out
+./perf -m I150.csv -o Psis > I150Psis.out
+./perf -m I150.csv -o Rgar75 > I150Rgar75.out
+./perf -m I150.csv -o Rgar112 > I150Rgar112.out
+./perf -m I150.csv -o Ware > I150Ware.out
+./perf -m I150.csv -o Wrcug > I150Wrcug.out
+./perf -m I150.csv -o Wrcwg > I150Wrcwg.out
+./perf -m I150.csv -o Wrug > I150Wrug.out
+./perf -m I150.csv -o Wrwg > I150Wrwg.out

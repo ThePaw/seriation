@@ -25,7 +25,7 @@ func g(x, y float64) float64 {
 	return 0
 }
 
-// G1Gain returns gain of the permuted matrix according to Hubert, Arabie & Meulman 2001, Chapter 4; see Brusco 2002: 50, Eq. 6. (WRUG)
+// Wrug returns gain of the permuted matrix according to Hubert, Arabie & Meulman 2001, Chapter 4; see Brusco 2002: 50, Eq. 6. (WRUG)
 func Wrug(dis Matrix64, p IntVector) float64 {
 	if !dis.IsSymmetric() {
 		panic("distance matrix not symmetric")
@@ -48,7 +48,7 @@ func Wrug(dis Matrix64, p IntVector) float64 {
 	return float64(c)
 }
 
-// G2Gain returns gain of the permuted matrix according to Hubert, Arabie & Meulman 2001, Chapter 4; see Brusco 2002: 50, Eq. 7. (WRCUG)
+// Wrcug returns gain of the permuted matrix according to Hubert, Arabie & Meulman 2001, Chapter 4; see Brusco 2002: 50, Eq. 7. (WRCUG)
 func Wrcug(dis Matrix64, p IntVector) float64 {
 	if !dis.IsSymmetric() {
 		panic("distance matrix not symmetric")
@@ -73,7 +73,7 @@ func Wrcug(dis Matrix64, p IntVector) float64 {
 	return float64(c)
 }
 
-// G3Gain returns gain of the permuted matrix according to Hubert, Arabie & Meulman 2001, Chapter 4; see Brusco 2002: 50, Eq. 8. (WRWG)
+// Wrwg returns gain of the permuted matrix according to Hubert, Arabie & Meulman 2001, Chapter 4; see Brusco 2002: 50, Eq. 8. (WRWG)
 func Wrwg(dis Matrix64, p IntVector) float64 {
 	if !dis.IsSymmetric() {
 		panic("distance matrix not symmetric")
@@ -96,7 +96,7 @@ func Wrwg(dis Matrix64, p IntVector) float64 {
 	return c
 }
 
-// G4Gain returns gain of the permuted matrix according to Hubert, Arabie & Meulman 2001, Chapter 4; see Brusco 2002: 50, Eq. 9. (WRCWG)  (? approx. -StrengLoss2)
+// Wrcwg returns gain of the permuted matrix according to Hubert, Arabie & Meulman 2001, Chapter 4; see Brusco 2002: 50, Eq. 9. (WRCWG)  (? approx. -StrengLoss2)
 func Wrcwg(dis Matrix64, p IntVector) float64 {
 	if !dis.IsSymmetric() {
 		panic("distance matrix not symmetric")
@@ -120,7 +120,7 @@ func Wrcwg(dis Matrix64, p IntVector) float64 {
 	return c
 }
 
-// HGain returns gain of the permuted matrix according to Szczotka 1972; see Brusco et al. 2008: 507, Eq. 7.
+// H returns gain of the permuted matrix according to Szczotka 1972; see Brusco et al. 2008: 507, Eq. 7.
 func H(dis Matrix64, p IntVector) float64 {
 	if !dis.IsSymmetric() {
 		panic("distance matrix not symmetric")
@@ -144,7 +144,7 @@ func H(dis Matrix64, p IntVector) float64 {
 // HNormGain returns gain of the permuted matrix according to Szczotka 1972; see Brusco et al. 2008: 507-508, Eq. 7.
 // TO BE IMPLEMENTED
 
-// InertiaGain returns the Inertia gain criterion (Caraux and Pinloche 2005).
+// Ine returns the Inertia gain criterion (Caraux and Pinloche 2005).
 func Ine(dis Matrix64, p IntVector) float64 {
 	if !dis.IsSymmetric() {
 		panic("distance matrix not symmetric")
@@ -163,7 +163,7 @@ func Ine(dis Matrix64, p IntVector) float64 {
 	return sum
 }
 
-// LeastSquaresLoss returns the Least Squares loss criterion (Caraux and Pinloche 2005).
+// Lsq returns the Least Squares loss criterion (Caraux and Pinloche 2005).
 func Lsq(dis Matrix64, p IntVector) float64 {
 	if !dis.IsSymmetric() {
 		panic("distance matrix not symmetric")
@@ -184,17 +184,17 @@ func Lsq(dis Matrix64, p IntVector) float64 {
 	return sum
 }
 
-// MooreStressDisLoss returns the Moore Stress loss criterion (Niermann 2005:42, Eq. 1, 2) for a distance matrix.
+// Msd returns the Moore Stress loss criterion (Niermann 2005:42, Eq. 1, 2) for a distance matrix.
 func Msd(dis Matrix64, p IntVector) float64 {
 	return MooreStressLoss(dis, p, p)
 }
 
-// VonNeumannStressDisLoss returns the Moore Stress criterion (Niermann 2005:42) for a distance matrix.
+// Nsd returns the Moore Stress criterion (Niermann 2005:42) for a distance matrix.
 func Nsd(dis Matrix64, p IntVector) float64 {
 	return VonNeumannStressLoss(dis, p, p)
 }
 
-// GARLoss returns the generalized anti-Robinson loss function for a distance matrix GAR(w) (Wu 2010: 773) .
+// Gar returns the generalized anti-Robinson loss function for a distance matrix GAR(w) (Wu 2010: 773) .
 func Gar(dis Matrix64, p IntVector, w int) float64 {
 	if !dis.IsSymmetric() {
 		panic("distance matrix not symmetric")
@@ -277,7 +277,7 @@ func Gar375(dis Matrix64, p IntVector) float64 {
 	return Gar(dis, p, 375)
 }
 
-// RGARLoss returns the relative generalized anti-Robinson loss function for a distance matrix RGAR(w)  (Wu 2010: 773) .
+// Rgar returns the relative generalized anti-Robinson loss function for a distance matrix RGAR(w)  (Wu 2010: 773) .
 func Rgar(dis Matrix64, p IntVector, w int) float64 {
 	if !dis.IsSymmetric() {
 		panic("distance matrix not symmetric")
@@ -335,7 +335,7 @@ func Rgar187(dis Matrix64, p IntVector) float64 {
 	return Rgar(dis, p, 187)
 }
 
-// HamiltonLoss returns the length of the shortest Hamiltonian path (openTSP).
+// Ham returns the length of the shortest Hamiltonian path (openTSP).
 func Ham(dis Matrix64, p IntVector) float64 {
 	if !dis.IsSymmetric() {
 		panic("distance matrix not symmetric")
@@ -423,7 +423,7 @@ func parabolaFit(v Vector64) (c1, c2, c3 float64, err bool) {
 	return
 }
 
-// ParabolaLoss returns the sum of squared residues of fitted parabola.
+// Par returns the sum of squared residues of fitted parabola.
 func Par(sim Matrix64, p IntVector) float64 {
 	if !sim.IsSymmetric() {
 		panic("similarity matrix not symmetric")
@@ -554,7 +554,7 @@ func Par(sim Matrix64, p IntVector) float64 {
 	return loss
 }
 
-// AREventsViolationLoss returns loss of the permuted matrix according to Kostopoulos & Goulermas
+// Are returns loss of the permuted matrix according to Kostopoulos & Goulermas
 func Are(dis Matrix64, p IntVector) float64 {
 	if !dis.IsSymmetric() {
 		panic("distance matrix not symmetric")
@@ -586,7 +586,7 @@ func Are(dis Matrix64, p IntVector) float64 {
 	return c
 }
 
-// WeightedAREventsViolationLoss returns gain of the permuted matrix according to Kostopoulos & Goulermas
+// Ware returns gain of the permuted matrix according to Kostopoulos & Goulermas
 func Ware(dis Matrix64, p IntVector) float64 {
 	if !dis.IsSymmetric() {
 		panic("distance matrix not symmetric")
@@ -620,7 +620,7 @@ func Ware(dis Matrix64, p IntVector) float64 {
 	return c
 }
 
-// DoublyWeightedAREventsViolationLoss returns loss of the permuted matrix according to Kostopoulos & Goulermas
+// Dware returns loss of the permuted matrix according to Kostopoulos & Goulermas
 func Dware(dis Matrix64, p IntVector) float64 {
 	if !dis.IsSymmetric() {
 		panic("distance matrix not symmetric")

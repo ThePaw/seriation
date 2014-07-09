@@ -1,0 +1,23 @@
+#!/bin/sh
+./perf -m R100.csv -o Are > R100Are.out
+./perf -m R100.csv -o Bers > R100Bers.out
+./perf -m R100.csv -o Dware > R100Dware.out
+./perf -m R100.csv -o Gar25 > R100Gar25.out
+./perf -m R100.csv -o Gar50 > R100Gar50.out
+./perf -m R100.csv -o Gar75 > R100Gar75.out
+./perf -m R100.csv -o H > R100H.out
+./perf -m R100.csv -o Ham > R100Ham.out
+./perf -m R100.csv -o Ine > R100Ine.out
+./perf -m R100.csv -o Lsq > R100Lsq.out
+./perf -m R100.csv -o Msd > R100Msd.out
+./perf -m R100.csv -o Nsd > R100Nsd.out
+./perf -m R100.csv -o Par > R100Par.out
+./perf -m R100.csv -o Psis > R100Psis.out
+./perf -m R100.csv -o Rgar25 > R100Rgar25.out
+./perf -m R100.csv -o Rgar50 > R100Rgar50.out
+./perf -m R100.csv -o Rgar75 > R100Rgar75.out
+./perf -m R100.csv -o Ware > R100Ware.out
+./perf -m R100.csv -o Wrcug > R100Wrcug.out
+./perf -m R100.csv -o Wrcwg > R100Wrcwg.out
+./perf -m R100.csv -o Wrug > R100Wrug.out
+./perf -m R100.csv -o Wrwg > R100Wrwg.out
