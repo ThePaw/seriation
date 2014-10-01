@@ -30,12 +30,12 @@ func (a Matrix64) Dims() (nRow, nCol int) {
 	return len(a), len(a[0])
 }
 
-// Rows returns the number of rows. 
+// Rows returns the number of rows.
 func (a Matrix64) Rows() int {
 	return len(a)
 }
 
-// Cols returns the number of columns. 
+// Cols returns the number of columns.
 func (a Matrix64) Cols() int {
 	if len(a) == 0 {
 		return 0
@@ -44,7 +44,7 @@ func (a Matrix64) Cols() int {
 }
 
 /*
-// CopyTo copies matrix to an existing matrix. 
+// CopyTo copies matrix to an existing matrix.
 func (a Matrix64) CopyTo(targetMat Matrix64) {
 	n := a.Rows() * a.Cols()
 	if n > 0 {
@@ -63,7 +63,7 @@ func (a Matrix64) CopyFrom(srcMat Matrix64) {
 }
 */
 
-// CopyTo copies matrix to an existing matrix. 
+// CopyTo copies matrix to an existing matrix.
 func (a Matrix64) CopyTo(targetMat Matrix64) {
 	for i, row := range a {
 		for j, _ := range row {
@@ -277,7 +277,7 @@ func (a Matrix64) PrettyString() string {
 	return res
 }
 
-// Product computes the product of two matrices. 
+// Product computes the product of two matrices.
 func (a Matrix64) Product(b Matrix64) Matrix64 {
 	nRow, nCol := a.Dims()
 	bRow, bCol := b.Dims()
@@ -296,7 +296,7 @@ func (a Matrix64) Product(b Matrix64) Matrix64 {
 	return c
 }
 
-// CircleProduct computes circular product of two matrices. 
+// CircleProduct computes circular product of two matrices.
 func (a Matrix64) CircleProduct(b Matrix64) Matrix64 {
 	r1, c1 := a.Dims()
 	r2, c2 := b.Dims()
@@ -315,7 +315,7 @@ func (a Matrix64) CircleProduct(b Matrix64) Matrix64 {
 	return c
 }
 
-// CirclePower computes circular power of a matrix. 
+// CirclePower computes circular power of a matrix.
 // See Kendall, 1971: 111, for definition.
 func (a Matrix64) CirclePower(n int) Matrix64 {
 	// S0
@@ -329,7 +329,7 @@ func (a Matrix64) CirclePower(n int) Matrix64 {
 	return s
 }
 
-// Transpose returns transposed matrix. 
+// Transpose returns transposed matrix.
 func (a Matrix64) Transpose() Matrix64 {
 	nRow, nCol := a.Dims()
 	c := NewMatrix64(nCol, nRow)
@@ -341,7 +341,7 @@ func (a Matrix64) Transpose() Matrix64 {
 	return c
 }
 
-// IsSquare tests whether the matrix is square matrix. 
+// IsSquare tests whether the matrix is square matrix.
 func (a Matrix64) IsSquare() bool {
 	q := true
 	nRow, nCol := a.Dims()
@@ -351,7 +351,7 @@ func (a Matrix64) IsSquare() bool {
 	return q
 }
 
-// IsSymmetric tests whether the square matrix is symmetric. 
+// IsSymmetric tests whether the square matrix is symmetric.
 func (a Matrix64) IsSymmetric() bool {
 	if !a.IsSquare() {
 		panic("not a square matrix")
@@ -369,7 +369,7 @@ func (a Matrix64) IsSymmetric() bool {
 	return q
 }
 
-// IsQ tests whether the matrix is a Q-matrix (columnwise). 
+// IsQ tests whether the matrix is a Q-matrix (columnwise).
 // See Kendall, 1971, for definition.
 func (a Matrix64) IsQ() bool {
 	nRow, nCol := a.Dims()
@@ -398,7 +398,7 @@ func (a Matrix64) IsQ() bool {
 	return q
 }
 
-// IsR tests whether the square matrix is a R-matrix (Robinson, columnwise). 
+// IsR tests whether the square matrix is a R-matrix (Robinson, columnwise).
 // See Kendall, 1971, for definition.
 func (a Matrix64) IsR() bool {
 	q := a.IsSymmetric()
@@ -408,7 +408,7 @@ func (a Matrix64) IsR() bool {
 	return q
 }
 
-// IsAR tests whether the square matrix is an Anti-R-matrix (Anti-Robinson, columnwise). 
+// IsAR tests whether the square matrix is an Anti-R-matrix (Anti-Robinson, columnwise).
 // See Kendall, 1971, for definition.
 func (a Matrix64) IsAR() bool {
 	if !a.IsSymmetric() {
@@ -440,7 +440,7 @@ func (a Matrix64) IsAR() bool {
 	return q
 }
 
-// IntRound clones the matrix into an integer matrix. 
+// IntRound clones the matrix into an integer matrix.
 func (a Matrix64) IntRound() IntMatrix {
 	out := NewIntMatrix(a.Rows(), a.Cols())
 	for i, row := range a {

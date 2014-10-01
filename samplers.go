@@ -8,7 +8,7 @@ import (
 	"math"
 )
 
-// betapara estimates the parameters a, b of beta distribution from expected proportion (pi), binomial denominator (m), and shape parameter (tau2). 
+// betapara estimates the parameters a, b of beta distribution from expected proportion (pi), binomial denominator (m), and shape parameter (tau2).
 func betapara(pi, m, tau2 float64) (a, b float64) {
 	// Solution (hopefully correct) of Exercise 4.17 of McCullagh & Nelder 1989, helped by Moore, Appl Stat 36, 8-14; 1987.
 	// Thanks to Jari Oksanen.

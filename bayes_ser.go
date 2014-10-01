@@ -1,3 +1,5 @@
+// Copyright 2012 - 2014 The Seriation Authors. All rights reserved. See the LICENSE file.
+
 package ser
 
 import (

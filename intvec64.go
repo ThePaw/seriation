@@ -8,13 +8,13 @@ import (
 
 type IntVector64 []int
 
-// NewIntVector64 creates a new IntVector64 instance with specified number of elements. 
+// NewIntVector64 creates a new IntVector64 instance with specified number of elements.
 func NewIntVector64(nElem int) IntVector64 {
 	v := make([]int, nElem)
 	return v
 }
 
-// Len returns number of elements in the vector. 
+// Len returns number of elements in the vector.
 func (v IntVector64) Len() int {
 	return len(v)
 }
@@ -44,7 +44,7 @@ func (v IntVector64) Swap(i, j int) {
 	v[j] = x
 }
 
-// Fill-in ordered sequence 0 .. n-1. 
+// Fill-in ordered sequence 0 .. n-1.
 func (v IntVector64) Order() {
 	n := v.Len()
 	for i := 0; i < n; i++ {

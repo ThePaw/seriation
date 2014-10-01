@@ -1,4 +1,5 @@
-// Copyright 2012 The Gt Authors. All rights reserved. See the LICENSE file.
+// Copyright 2012 - 2014 The Seriation Authors. All rights reserved. See the LICENSE file.
+
 package ser
 
 // Common functions for  the Quadratic Assignment Problem.
@@ -25,9 +26,9 @@ func delta(a, b IntMatrix, p IntVector, r, s int) (d int) {
 	return d
 }
 
-// Cost difference if elements i and j  are swapped in permutation (solution) p, 
+// Cost difference if elements i and j  are swapped in permutation (solution) p,
 // but the value of dist[i][j] is supposed to
-// be known before the transposition of elements r and s. 
+// be known before the transposition of elements r and s.
 func delta_part(a, b, dist IntMatrix, p IntVector, i, j, r, s int) int {
 	return dist[i][j] + (a[r][i]-a[r][j]+a[s][j]-a[s][i])*
 		(b[p[s]][p[i]]-b[p[s]][p[j]]+b[p[r]][p[j]]-b[p[r]][p[i]]) +

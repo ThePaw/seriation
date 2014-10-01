@@ -1,8 +1,8 @@
-// Copyright 2012 The Eco Authors. All rights reserved. See the LICENSE file.
+// Copyright 2012 - 2014 The Seriation Authors. All rights reserved. See the LICENSE file.
 
 package ser
 
-// Solve the Quadratic Assignment Problem using the Fast ant system. 
+// Solve the Quadratic Assignment Problem using the Fast ant system.
 // E. D. Taillard 1998. "FANT: Fast ant system.  Technical report IDSIA-46-98, IDSIA, Lugano.
 
 import (
@@ -11,8 +11,8 @@ import (
 
 var Verbose bool
 
-// Local search: Scan the neighbourhood at most twice. 
-// Perform improvements as soon as they are found. 
+// Local search: Scan the neighbourhood at most twice.
+// Perform improvements as soon as they are found.
 func localSearch(a, b IntMatrix, p IntVector, cost *int) {
 	// set of moves, numbered from 0 to index
 	n := p.Len()
@@ -44,7 +44,7 @@ func localSearch(a, b IntMatrix, p IntVector, cost *int) {
 	return
 }
 
-// QAP_SolveFANT solves the Quadratic Assignment Problem using Fast Ant System, single trial. 
+// QAP_SolveFANT solves the Quadratic Assignment Problem using Fast Ant System, single trial.
 func QAP_SolveFANT(a, b IntMatrix, p IntVector, r, m int) int {
 	n := p.Len()
 	w := p.Clone()
@@ -81,7 +81,7 @@ func QAP_SolveFANT(a, b IntMatrix, p IntVector, r, m int) int {
 	return cc
 }
 
-// QAP_fant solves the Quadratic Assignment Problem using Fast Ant System, in k trials. 
+// QAP_fant solves the Quadratic Assignment Problem using Fast Ant System, in k trials.
 func QAP_fant(dist, flow IntMatrix, trials, improLagMax, r int) (int, IntVector) {
 	var cost = iInf
 	n := dist.Rows()

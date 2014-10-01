@@ -1,16 +1,15 @@
-// Copyright 2012 - 2013 The Eco Authors. All rights reserved. See the LICENSE file.
+// Copyright 2012 - 2014 The Seriation Authors. All rights reserved. See the LICENSE file.
 
 package ser
 
-// MCMC reordering of similarity matrix rows and columns to sample from the Boltzmann distribution.
-// see Miklos (2005)
+// MCMC reordering of similarity matrix rows and columns to sample from the Boltzmann distribution. Inspired by Miklos (2005).
 
 import (
 	"math"
 	"math/rand"
 )
 
-// proposeRowPerm()
+// proposeRowPerm proposes a new candidate for a row permutation of the matrix.
 func proposeRowPerm(rowPerm, rowPermNew IntVector) {
 	rows := rowPerm.Len()
 	d := rand.Intn(rows)
@@ -24,9 +23,9 @@ func proposeRowPerm(rowPerm, rowPermNew IntVector) {
 }
 
 // BoltzmannMCMC does MCMC sampling from Boltzmann distribution of reordered similarity matrices  (close to Robinson form).
+func BoltzmannMCMC(sim Matrix64, energyFn string, temp float64, burnIn, totalSamples, iter int) (permBest, rhoH IntVector, h, pOH IntMatrix, enBest float64) {
 // Inspired by Miklos (2005).
 // WARNING: when data is a similarity (correlation, gain) matrix, then columns MUST NOT be permuted separately!! Implemented. Publish!!
-func BoltzmannMCMC(sim Matrix64, energyFn string, temp float64, burnIn, totalSamples, iter int) (permBest, rhoH IntVector, h, pOH IntMatrix, enBest float64) {
 
 	rows, _ := sim.Dims()
 	if !sim.IsSymmetric() {

@@ -1,3 +1,5 @@
+// Copyright 2012 - 2014 The Seriation Authors. All rights reserved. See the LICENSE file.
+
 package ser
 
 import (
@@ -40,12 +42,12 @@ func HOFFit(model int, a, b, c, d, x float64) float64 {
 
 // Sample mean and unbiased (Bessel correction) variance estimates for a data vector.
 func SampleMeanVar(x []float64) (μ, σ2 float64) {
-	// Arguments: 
+	// Arguments:
 	// x - vector of observations
 	//
-	// Returns: 
-	// μ - mean estimator 
-	// σ2 - variance estimator 
+	// Returns:
+	// μ - mean estimator
+	// σ2 - variance estimator
 
 	var n int
 	var m, m2 float64

@@ -92,7 +92,7 @@ func (a IntMatrix) SwapCols(i int, j int) {
 	}
 }
 
-// ReadCsvIntMatrix  reads the matrix from an opened CSV file. 
+// ReadCsvIntMatrix  reads the matrix from an opened CSV file.
 func ReadCsvIntMatrix(f *os.File) (a IntMatrix) {
 	read := csv.NewReader(io.Reader(f))
 	data, err := read.ReadAll()
@@ -212,7 +212,7 @@ func (a IntMatrix) PrettyString() string {
 	return res
 }
 
-// Product computes the product of two matrices. 
+// Product computes the product of two matrices.
 func (a IntMatrix) Product(b IntMatrix) IntMatrix {
 	nRow, nCol := a.Dims()
 	bRow, bCol := b.Dims()
@@ -231,7 +231,7 @@ func (a IntMatrix) Product(b IntMatrix) IntMatrix {
 	return c
 }
 
-// CircleProduct computes circular product of two matrices. 
+// CircleProduct computes circular product of two matrices.
 func (a IntMatrix) CircleProduct(b IntMatrix) IntMatrix {
 	r1, c1 := a.Dims()
 	r2, c2 := b.Dims()
@@ -250,7 +250,7 @@ func (a IntMatrix) CircleProduct(b IntMatrix) IntMatrix {
 	return c
 }
 
-// CirclePower computes circular power of a matrix. 
+// CirclePower computes circular power of a matrix.
 // See Kendall, 1971: 111, for definition.
 func (a IntMatrix) CirclePower(n int) IntMatrix {
 	// S0
@@ -264,7 +264,7 @@ func (a IntMatrix) CirclePower(n int) IntMatrix {
 	return s
 }
 
-// Transpose returns transposed matrix. 
+// Transpose returns transposed matrix.
 func (a IntMatrix) Transpose() IntMatrix {
 	nRow, nCol := a.Dims()
 	c := NewIntMatrix(nCol, nRow)
@@ -276,7 +276,7 @@ func (a IntMatrix) Transpose() IntMatrix {
 	return c
 }
 
-// IsSquare tests whether the matrix is square matrix. 
+// IsSquare tests whether the matrix is square matrix.
 func (a IntMatrix) IsSquare() bool {
 	q := true
 	nRow, nCol := a.Dims()
@@ -286,7 +286,7 @@ func (a IntMatrix) IsSquare() bool {
 	return q
 }
 
-// IsSymmetric tests whether the square matrix is symmetric. 
+// IsSymmetric tests whether the square matrix is symmetric.
 func (a IntMatrix) IsSymmetric() bool {
 
 	if !a.IsSquare() {
@@ -305,7 +305,7 @@ func (a IntMatrix) IsSymmetric() bool {
 	return q
 }
 
-// IsQ tests whether the matrix is a Q-matrix (columnwise). 
+// IsQ tests whether the matrix is a Q-matrix (columnwise).
 // See Kendall, 1971, for definition.
 func (a IntMatrix) IsQ() bool {
 	nRow, nCol := a.Dims()
@@ -334,7 +334,7 @@ func (a IntMatrix) IsQ() bool {
 	return q
 }
 
-// IsR tests whether the square matrix is a R-matrix (Robinson, columnwise). 
+// IsR tests whether the square matrix is a R-matrix (Robinson, columnwise).
 // See Kendall, 1971, for definition.
 func (a IntMatrix) IsR() bool {
 	q := a.IsSymmetric()
@@ -344,7 +344,7 @@ func (a IntMatrix) IsR() bool {
 	return q
 }
 
-// IsAR tests whether the square matrix is an Anti-R-matrix (Anti-Robinson, columnwise). 
+// IsAR tests whether the square matrix is an Anti-R-matrix (Anti-Robinson, columnwise).
 // See Kendall, 1971, for definition.
 func (a IntMatrix) IsAR() bool {
 	if !a.IsSymmetric() {
@@ -376,7 +376,7 @@ func (a IntMatrix) IsAR() bool {
 	return q
 }
 
-// PermuteRows returns rearranged matrix according to a row permutation vector. 
+// PermuteRows returns rearranged matrix according to a row permutation vector.
 func (a IntMatrix) PermuteRows(p IntVector) {
 	if p.Len() != a.Rows() || !p.IsPermutation() {
 		panic("bad permutation vector")
@@ -390,7 +390,7 @@ func (a IntMatrix) PermuteRows(p IntVector) {
 	a.CopyFrom(b)
 }
 
-// PermuteCols returns rearranged matrix according to a row permutation vector. 
+// PermuteCols returns rearranged matrix according to a row permutation vector.
 func (a IntMatrix) PermuteCols(p IntVector) {
 	if p.Len() != a.Cols() || !p.IsPermutation() {
 		panic("bad permutation vector")
@@ -404,7 +404,7 @@ func (a IntMatrix) PermuteCols(p IntVector) {
 	a.CopyFrom(b)
 }
 
-// Permute returns rearranged matrix according to row and column permutation vectors. 
+// Permute returns rearranged matrix according to row and column permutation vectors.
 func (a IntMatrix) Permute(pRow, pCol IntVector) {
 	if pRow.Len() != a.Rows() || !pRow.IsPermutation() {
 		panic("bad row permutation vector")
@@ -421,7 +421,7 @@ func (a IntMatrix) Permute(pRow, pCol IntVector) {
 	a.CopyFrom(b)
 }
 
-// IsIdentical tests whether the matrices are the same. 
+// IsIdentical tests whether the matrices are the same.
 func (a IntMatrix) IsIdentical(b IntMatrix) bool {
 	r1, c1 := a.Dims()
 	r2, c2 := b.Dims()

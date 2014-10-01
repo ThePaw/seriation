@@ -1,11 +1,11 @@
-// Copyright 2012 The Eco Authors. All rights reserved. See the LICENSE file.
+// Copyright 2012 - 2014 The Seriation Authors. All rights reserved. See the LICENSE file.
 
 package ser
 
 // Fast Ant System. Integer version.
 // E. D. Taillard 1998. "FANT: Fast ant system.  Technical report IDSIA-46-98, IDSIA, Lugano.
 
-// (Re-) initialization of the trace. 
+// initTrace does the (re-) initialization of the trace.
 func initTrace(inc int, trace IntMatrix) {
 	n := trace.Rows()
 	for i := 0; i < n; i++ {
@@ -15,7 +15,7 @@ func initTrace(inc int, trace IntMatrix) {
 	}
 }
 
-// Trace update. 
+// updateTrace updates the feromone trace.
 func updateTrace(p, best_p IntVector, inc *int, r int, trace IntMatrix) {
 	var i int
 	n := p.Len()
@@ -32,8 +32,7 @@ func updateTrace(p, best_p IntVector, inc *int, r int, trace IntMatrix) {
 	}
 }
 
-// Generate a solution with probability of setting p[i] == j 
-// proportionnal to trace[i][j]. 
+// genTrace generates a solution with probability of setting p[i] == j prop
 func genTrace(p IntVector, trace IntMatrix) {
 	var target, sum int
 	n := p.Len()

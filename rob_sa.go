@@ -1,4 +1,4 @@
-// Copyright 2013 The Eco Authors. All rights reserved. See the LICENSE file.
+// Copyright 2013 The Seriation Authors. All rights reserved. See the LICENSE file.
 
 package ser
 

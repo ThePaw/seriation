@@ -1,4 +1,4 @@
-// Copyright 2012 The Eco Authors. All rights reserved. See the LICENSE file.
+// Copyright 2012 - 2014 The Seriation Authors. All rights reserved. See the LICENSE file.
 
 package ser
 
@@ -273,6 +273,10 @@ func Gar187(dis Matrix64, p IntVector) float64 {
 	return Gar(dis, p, 187)
 }
 
+func Gar250(dis Matrix64, p IntVector) float64 {
+	return Gar(dis, p, 250)
+}
+
 func Gar375(dis Matrix64, p IntVector) float64 {
 	return Gar(dis, p, 375)
 }
@@ -333,6 +337,14 @@ func Rgar125(dis Matrix64, p IntVector) float64 {
 
 func Rgar187(dis Matrix64, p IntVector) float64 {
 	return Rgar(dis, p, 187)
+}
+
+func Rgar250(dis Matrix64, p IntVector) float64 {
+	return Rgar(dis, p, 250)
+}
+
+func Rgar375(dis Matrix64, p IntVector) float64 {
+	return Rgar(dis, p, 375)
 }
 
 // Ham returns the length of the shortest Hamiltonian path (openTSP).

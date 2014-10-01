@@ -1,15 +1,15 @@
-// Copyright 2012 The Eco Authors. All rights reserved. See the LICENSE file.
+// Copyright 2012 - 2014 The Seriation Authors. All rights reserved. See the LICENSE file.
 
 package ser
 
-// Fast Ant System. Float64 version
+// Fast Ant System. Float64 version.
 // E. D. Taillard 1998. "FANT: Fast ant system.  Technical report IDSIA-46-98, IDSIA, Lugano.
 
 import (
 	"math/rand"
 )
 
-// (Re-) initialization of the trace. 
+// initTraceF64 does the (re-) initialization of the trace.
 func initTraceF64(inc float64, trace Matrix64) {
 	n := trace.Rows()
 	for i := 0; i < n; i++ {
@@ -19,7 +19,7 @@ func initTraceF64(inc float64, trace Matrix64) {
 	}
 }
 
-// Trace update. 
+// updateTraceF64 updates the feromone trace.
 func updateTraceF64(p, best_p IntVector, inc *float64, r float64, trace Matrix64) {
 	var i int
 	n := p.Len()
@@ -36,8 +36,7 @@ func updateTraceF64(p, best_p IntVector, inc *float64, r float64, trace Matrix64
 	}
 }
 
-// Generate a solution with probability of setting p[i] == j 
-// proportionnal to trace[i][j]. 
+// genTraceF64 generates a solution with probability of setting p[i] == j proportionnal to trace[i][j].
 func genTraceF64(p IntVector, trace Matrix64) {
 	var target, sum float64
 	n := p.Len()

@@ -1,7 +1,7 @@
 package main
 
 import (
-	. "code.google.com/p/ser"
+	. "code.google.com/p/seriation"
 	"flag"
 	"fmt"
 	"math/rand"
@@ -202,6 +202,15 @@ func main() {
 		objFn = Rgar187
 		isLoss = true
 		isDistFn = true
+	case "Rgar250":
+		objFn = Rgar250
+		isLoss = true
+		isDistFn = true
+	case "Rgar375":
+		objFn = Rgar375
+		isLoss = true
+		isDistFn = true
+
 	}
 
 	// print header
@@ -220,7 +229,7 @@ func main() {
 	//	a.Print()
 	fmt.Println("Best permutations: ")
 
-	start := time.Now()
+	t0 := time.Now()
 
 	// start with the same conditions
 	rand.Seed(seed)
@@ -245,12 +254,9 @@ func main() {
 	}
 	rankHitsProp := float64(sumDiag) / float64(nIter*nSamp)
 	fmt.Println()
-
+	dur := time.Since(t0)
+	sec := dur.Seconds()
 	fmt.Println("Summary:")
-	fmt.Println("objF nSamp nIter rhoMean rhoStDev rProp hitsProp rankHitsProp")
-	fmt.Println(objf, nSamp, nIter, rhoMean, rhoStDev, rProp, hitsProp, rankHitsProp)
-	fmt.Println()
-	fmt.Println("Time: ", time.Since(start))
-	fmt.Println("=======================================================")
-
+	fmt.Println("objF nSamp nIter rhoMean rhoStDev rProp hitsProp rankHitsProp seconds")
+	fmt.Println(objf, nSamp, nIter, rhoMean, rhoStDev, rProp, hitsProp, rankHitsProp, sec)
 }

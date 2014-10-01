@@ -1,8 +1,8 @@
-// Copyright 2012 The Seriation Authors. All rights reserved. See the LICENSE file.
+// Copyright 2012 - 2014 The Seriation Authors. All rights reserved. See the LICENSE file.
 
 package ser
 
-// Objective (loss and gain) functions for mxn data matrices. 
+// Objective (loss and gain) functions for mxn data matrices.
 
 import (
 	//	"fmt"
@@ -198,7 +198,7 @@ func BertinLoss2(mtx Matrix64, rowPerm, colPerm IntVector) float64 {
 
 ///////////////////// Untested functions
 
-// BertinGain returns 
+// BertinGain returns
 func BertinGain(mtx Matrix64, rowPerm, colPerm IntVector) float64 {
 	// B(A) of Pilhofer 2012: 2509, Eq. 1
 	n, m := mtx.Dims()

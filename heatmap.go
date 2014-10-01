@@ -1,12 +1,15 @@
-// Heat Map
+// Copyright 2012 - 2014 The Seriation Authors. All rights reserved. See the LICENSE file.
 
 package ser
+
+// Heat Map
 
 import (
 	"code.google.com/p/plotinum/plot"
 	"code.google.com/p/plotinum/plotter"
 )
 
+// Heat Map plots a heatmap of a matrix.
 func HeatMap(mat Matrix64) {
 	heatData := getData(mat)
 

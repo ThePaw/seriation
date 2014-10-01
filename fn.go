@@ -1,4 +1,4 @@
-// Copyright 2012 The Eco Authors. All rights reserved. See the LICENSE file.
+// Copyright 2012 - 2014 The Seriation Authors. All rights reserved. See the LICENSE file.
 
 package ser
 
@@ -14,6 +14,7 @@ import (
 const iInf int = math.MaxInt32
 const inf float64 = math.MaxFloat64
 
+// min returns lesser of the two numbers.
 func min(a, b float64) float64 {
 	if a < b {
 		return a
@@ -92,8 +93,7 @@ func unif64(low, high int64) int64 {
 	return low + rand.Int63n(high-low+1)
 }
 
-// Laplacian returns the Laplacian of a symmetric matrix (adjacency matrix).
-// See Atkins et al. (1998).
+// Laplacian returns the Laplacian of a symmetric matrix (adjacency matrix). See Atkins et al. (1998).
 func Laplacian(adj IntMatrix) IntMatrix {
 	if !adj.IsSymmetric() {
 		panic("matrix not symmetric")
@@ -129,8 +129,7 @@ To be implemented
 }
 */
 
-// Adj2Sim constructs similarity matrix from adjacency matrix via circle product.
-// See Kendall, 1971; Atkins et al. 1998: 309.
+// Adj2Sim constructs similarity matrix from adjacency matrix via circle product. See Kendall, 1971; Atkins et al. 1998: 309.
 func Adj2Sim(a Matrix64, permuteWhat string) Matrix64 {
 	var s Matrix64
 	t := a.Transpose()
@@ -143,12 +142,12 @@ func Adj2Sim(a Matrix64, permuteWhat string) Matrix64 {
 	return s
 }
 
-// reverses the permutation if it is decreasing
+// reverseIfNeeded reverses the permutation if it is decreasing
 func reverseIfNeeded(perm IntVector) {
 	smp := len(perm)
 	half := smp / 2
 
-	// sum labels up to half-length
+	// sum elements up to half-length
 	sum := 0
 	for i := 0; i < half; i++ {
 		sum += perm[i]
@@ -165,7 +164,7 @@ func reverseIfNeeded(perm IntVector) {
 	return
 }
 
-// reverses the permutation if it is decreasing, using Spearman rho rank correlation coefficient
+// reverseIfNeeded2 reverses the permutation if it is decreasing, using Spearman rho rank correlation coefficient
 func reverseIfNeeded2(perm IntVector) float64 {
 	smp := len(perm)
 	truth := make(IntVector, smp)
@@ -217,6 +216,7 @@ func reverseIfNeeded2(perm IntVector) float64 {
 	return rho
 }
 
+// addToRankHistogram updates 
 func addToRankHistogram(perm IntVector, h IntMatrix) {
 	smp := len(perm)
 	for i := 0; i < smp; i++ {

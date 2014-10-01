@@ -6,7 +6,7 @@ import (
 	"math"
 )
 
-// distances calculates distance matrix for the QAP. 
+// distances calculates distance matrix for the QAP.
 func distances(smp int) (dist IntMatrix) {
 	dist = NewIntMatrix(smp, smp)
 	for i := 0; i < smp; i++ {
@@ -17,7 +17,7 @@ func distances(smp int) (dist IntMatrix) {
 	return
 }
 
-// distances2 calculates distance matrix for the QAP. 
+// distances2 calculates distance matrix for the QAP.
 func distances2(smp int, exp float64) (dist IntMatrix) {
 	dist = NewIntMatrix(smp, smp)
 	for i := 0; i < smp; i++ {
@@ -30,7 +30,7 @@ func distances2(smp int, exp float64) (dist IntMatrix) {
 	return
 }
 
-// distances3 calculates distance matrix for the QAP. 
+// distances3 calculates distance matrix for the QAP.
 func distances3(smp int, root float64) (dist IntMatrix) {
 	dist = NewIntMatrix(smp, smp)
 	for i := 0; i < smp; i++ {
@@ -43,7 +43,7 @@ func distances3(smp int, root float64) (dist IntMatrix) {
 	return
 }
 
-// distances4 calculates distance matrix for the QAP. 
+// distances4 calculates distance matrix for the QAP.
 func distances4(smp int, c float64) (dist IntMatrix) {
 	dist = NewIntMatrix(smp, smp)
 	for i := 0; i < smp; i++ {
@@ -56,7 +56,7 @@ func distances4(smp int, c float64) (dist IntMatrix) {
 	return
 }
 
-// calculates flow matrix for the QAP. 
+// calculates flow matrix for the QAP.
 func flows(dat IntMatrix, exp float64) (flow IntMatrix) {
 	const scale float64 = 1000
 	var y float64
