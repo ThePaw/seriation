@@ -94,97 +94,97 @@ func TestCosts(t *testing.T) {
 	mstr := 32.9690
 	nstr := 13.9122
 
-	cost = HamiltonLoss(a, p)
+	cost = Ham(a, p)
 	x := math.Abs(1 - cost/hp)
 	if x > eps {
 		t.Error()
 	}
 
-	cost = BertinLossSim(a, p)
+	cost = Bers(a, p)
 	x = math.Abs(1 - cost/bcc)
 	if x > eps {
 		t.Error()
 	}
 
-	cost = EffectivenessGain(a, p)
+	cost = Moed(a, p)
 	x = math.Abs(1 - cost/moe)
 	if x > eps {
 		t.Error()
 	}
 
-	cost = InertiaGain(a, p)
+	cost = Ine(a, p)
 	x = math.Abs(1 - cost/in)
 	if x > eps {
 		t.Error()
 	}
 
-	cost = LeastSquaresLoss(a, p)
+	cost = Lsq(a, p)
 	x = math.Abs(1 - cost/ls)
 	if x > eps {
 		t.Error()
 	}
 
-	cost = MooreStressDisLoss(a, p)
+	cost = Msd(a, p)
 	x = math.Abs(1 - cost/mstr)
 	if x > eps {
 		t.Error()
 	}
 
-	cost = VonNeumannStressDisLoss(a, p)
+	cost = Nsd(a, p)
 	x = math.Abs(1 - cost/nstr)
 	if x > eps {
 		t.Error()
 	}
 
-	cost = GARLoss5(a, p)
+	cost = Gar5(a, p)
 	x = math.Abs(1 - cost/g5)
 	if x > eps {
 		t.Error()
 	}
 
-	cost = GARLoss10(a, p)
+	cost = Gar10(a, p)
 	x = math.Abs(1 - cost/g10)
 	if x > eps {
 		t.Error()
 	}
 
-	cost = RGARLoss5(a, p)
+	cost = Rgar5(a, p)
 	x = math.Abs(1 - cost/rg5)
 	if x > eps {
 		t.Error()
 	}
 
-	cost = RGARLoss10(a, p)
+	cost = Rgar10(a, p)
 	x = math.Abs(1 - cost/rg10)
 	if x > eps {
 		t.Error()
 	}
 
-	cost = AREventsViolationLoss(a, p)
+	cost = Are(a, p)
 	x = math.Abs(1 - cost/are)
 	if x > eps {
 		t.Error()
 	}
 
-	cost = WeightedAREventsViolationLoss(a, p)
+	cost = Ware(a, p)
 	x = math.Abs(1 - cost/ware)
 	if x > eps {
 		t.Error()
 	}
 
-	cost = DoublyWeightedAREventsViolationLoss(a, p)
+	cost = Dware(a, p)
 	x = math.Abs(1 - cost/dware)
 	if x > eps {
 		t.Error()
 	}
 
-	cost = G2Gain(a, p)
+	cost = Wrcug(a, p)
 	x = math.Abs(1 - cost/arc)
 	if x > eps {
 		t.Error()
 	}
 
-	cost = G4Gain(a, p)
+	cost = Wrcwg(a, p)
 	x = math.Abs(1 - cost/warc)
 	if x > eps {
 		t.Error()

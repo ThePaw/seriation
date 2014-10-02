@@ -258,5 +258,5 @@ func main() {
 	sec := dur.Seconds()
 	fmt.Println("Summary:")
 	fmt.Println("objF nSamp nIter rhoMean rhoStDev rProp hitsProp rankHitsProp seconds")
-	fmt.Println(objf, nSamp, nIter, rhoMean, rhoStDev, rProp, hitsProp, rankHitsProp, sec)
+	fmt.Println(objf,nSamp,nIter,rhoMean,rhoStDev,rProp,hitsProp,rankHitsProp,sec)
 }

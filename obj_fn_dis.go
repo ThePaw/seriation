@@ -189,7 +189,7 @@ func Msd(dis Matrix64, p IntVector) float64 {
 	return MooreStressLoss(dis, p, p)
 }
 
-// Nsd returns the Moore Stress criterion (Niermann 2005:42) for a distance matrix.
+// Nsd returns the VonNeumann Stress criterion (Niermann 2005:42) for a distance matrix.
 func Nsd(dis Matrix64, p IntVector) float64 {
 	return VonNeumannStressLoss(dis, p, p)
 }
