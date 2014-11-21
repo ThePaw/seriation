@@ -32,7 +32,7 @@ func Psis(sim Matrix64, p IntVector) float64 {
 	return loss
 }
 
-// BertinLossSim returns loss of the permuted matrix according to Kostopoulos & Goulermas
+// BertinLossSim returns loss of the permuted matrix according to Kostopoulos & Goulermas(in preparation).
 func Bers(sim Matrix64, p IntVector) float64 {
 	if !sim.IsSymmetric() {
 		panic("simtance matrix not symmetric")

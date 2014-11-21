@@ -216,7 +216,7 @@ func reverseIfNeeded2(perm IntVector) float64 {
 	return rho
 }
 
-// addToRankHistogram updates 
+// addToRankHistogram updates
 func addToRankHistogram(perm IntVector, h IntMatrix) {
 	smp := len(perm)
 	for i := 0; i < smp; i++ {

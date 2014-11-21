@@ -1,1 +1,3 @@
 Program, scripts, and data to reproduce results in "Cejchan P.A. 2014 Performance of Different Objective Functions for Seriation of Pre-Robinson Matrices. (Submitted to Journal of Statistical Software)".
+Just run "sh ./ReproduceResultsAndFigs".
+

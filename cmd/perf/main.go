@@ -1,5 +1,7 @@
 package main
 
+// Program to seriate a square symmetric similarity matrix
+
 import (
 	. "code.google.com/p/seriation"
 	"flag"

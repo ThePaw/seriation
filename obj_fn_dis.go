@@ -25,7 +25,7 @@ func g(x, y float64) float64 {
 	return 0
 }
 
-// Wrug returns gain of the permuted matrix according to Hubert, Arabie & Meulman 2001, Chapter 4; see Brusco 2002: 50, Eq. 6. (WRUG)
+// Wrug within row unweighted gradient (WRUG) gain of a permuted distance matrix (Hubert et al. 2001, Chapter 4; Brusco 2002: 50, Eq. 6, g_{1}(\Psi).
 func Wrug(dis Matrix64, p IntVector) float64 {
 	if !dis.IsSymmetric() {
 		panic("distance matrix not symmetric")
@@ -48,7 +48,7 @@ func Wrug(dis Matrix64, p IntVector) float64 {
 	return float64(c)
 }
 
-// Wrcug returns gain of the permuted matrix according to Hubert, Arabie & Meulman 2001, Chapter 4; see Brusco 2002: 50, Eq. 7. (WRCUG)
+// Wrcug returns within row and column unweighted gradient (WRCUG) gain of a permuted distance matrix (Hubert et al. 2001, Chapter 4; Brusco 2002: 50, Eq. 7, g_{2}(\Psi)).
 func Wrcug(dis Matrix64, p IntVector) float64 {
 	if !dis.IsSymmetric() {
 		panic("distance matrix not symmetric")
@@ -73,7 +73,7 @@ func Wrcug(dis Matrix64, p IntVector) float64 {
 	return float64(c)
 }
 
-// Wrwg returns gain of the permuted matrix according to Hubert, Arabie & Meulman 2001, Chapter 4; see Brusco 2002: 50, Eq. 8. (WRWG)
+// Wrwg returns within row weighted gradient (WRWG) gain of a permuted distance matrix (Hubert et al. 2001, Chapter 4; Brusco 2002: 50, Eq. 8, g_{3}(\Psi)).
 func Wrwg(dis Matrix64, p IntVector) float64 {
 	if !dis.IsSymmetric() {
 		panic("distance matrix not symmetric")
@@ -96,7 +96,7 @@ func Wrwg(dis Matrix64, p IntVector) float64 {
 	return c
 }
 
-// Wrcwg returns gain of the permuted matrix according to Hubert, Arabie & Meulman 2001, Chapter 4; see Brusco 2002: 50, Eq. 9. (WRCWG)  (? approx. -StrengLoss2)
+// Wrcwg returns within row and column weighted gradient (WRCWG) gain of a permuted distance matrix (Hubert et al. 2001, Chapter 4; Brusco 2002: 50, Eq. 9, g_{4}(\Psi)).  (? approx. -StrengLoss2)
 func Wrcwg(dis Matrix64, p IntVector) float64 {
 	if !dis.IsSymmetric() {
 		panic("distance matrix not symmetric")
@@ -120,7 +120,7 @@ func Wrcwg(dis Matrix64, p IntVector) float64 {
 	return c
 }
 
-// H returns gain of the permuted matrix according to Szczotka 1972; see Brusco et al. 2008: 507, Eq. 7.
+// H returns Szczotka's gain criterion of a permuted distance matrix (Szczotka 1972; Hubert and Schultz 1976; Brusco and Stahl 2000: 201, Eq. 5, Z_{5} ; Brusco et al. 2008: 507, Eq. 7, h(\psi)).
 func H(dis Matrix64, p IntVector) float64 {
 	if !dis.IsSymmetric() {
 		panic("distance matrix not symmetric")
@@ -144,7 +144,7 @@ func H(dis Matrix64, p IntVector) float64 {
 // HNormGain returns gain of the permuted matrix according to Szczotka 1972; see Brusco et al. 2008: 507-508, Eq. 7.
 // TO BE IMPLEMENTED
 
-// Ine returns the Inertia gain criterion (Caraux and Pinloche 2005).
+// Ine returns the inertia gain criterion of a permuted distance matrix (Caraux and Pinloche 2005; Hahsler et al. 2008: 5, Eq. 11).
 func Ine(dis Matrix64, p IntVector) float64 {
 	if !dis.IsSymmetric() {
 		panic("distance matrix not symmetric")
@@ -163,7 +163,7 @@ func Ine(dis Matrix64, p IntVector) float64 {
 	return sum
 }
 
-// Lsq returns the Least Squares loss criterion (Caraux and Pinloche 2005).
+// Lsq returns the least squares loss criterion of a permuted distance matrix (Caraux and Pinloche 2005; Hahsler et al. 2008: 5, Eq. 12).
 func Lsq(dis Matrix64, p IntVector) float64 {
 	if !dis.IsSymmetric() {
 		panic("distance matrix not symmetric")
@@ -184,17 +184,17 @@ func Lsq(dis Matrix64, p IntVector) float64 {
 	return sum
 }
 
-// Msd returns the Moore Stress loss criterion (Niermann 2005:42, Eq. 1, 2) for a distance matrix.
+// Msd returns the Moore stress loss criterion of the matrix, here applied to a permuted distance matrix, so that m=n (Niermann 2005: 42, Eq. 1, 2; Hahsler et al. 2008: 6, Eq. 15).
 func Msd(dis Matrix64, p IntVector) float64 {
 	return MooreStressLoss(dis, p, p)
 }
 
-// Nsd returns the VonNeumann Stress criterion (Niermann 2005:42) for a distance matrix.
+// Nsd returns the von Neumann stress loss criterion of the matrix, here applied to a permuted distance matrix, so that m=n (Niermann 2005: 42).
 func Nsd(dis Matrix64, p IntVector) float64 {
 	return VonNeumannStressLoss(dis, p, p)
 }
 
-// Gar returns the generalized anti-Robinson loss function for a distance matrix GAR(w) (Wu 2010: 773) .
+// Gar returns generalised anti-Robinson violation loss criterion of a permuted distance matrix (Chen 2002; Tien et al. 2008; Wu et al. 2010: 773, GAR(w)).
 func Gar(dis Matrix64, p IntVector, w int) float64 {
 	if !dis.IsSymmetric() {
 		panic("distance matrix not symmetric")
@@ -229,59 +229,73 @@ func Gar(dis Matrix64, p IntVector, w int) float64 {
 	}
 	return sum
 }
+
+// Gar5 returns generalised anti-Robinson violation loss criterion of a permuted distance matrix with window width = 5.
 func Gar5(dis Matrix64, p IntVector) float64 {
 	return Gar(dis, p, 5)
 }
 
+// Gar10 returns generalised anti-Robinson violation loss criterion of a permuted distance matrix with window width = 10.
 func Gar10(dis Matrix64, p IntVector) float64 {
 	return Gar(dis, p, 10)
 }
 
+// Gar12 returns generalised anti-Robinson violation loss criterion of a permuted distance matrix with window width = 12.
 func Gar12(dis Matrix64, p IntVector) float64 {
 	return Gar(dis, p, 12)
 }
 
+// Gar15 returns generalised anti-Robinson violation loss criterion of a permuted distance matrix with window width = 15.
 func Gar15(dis Matrix64, p IntVector) float64 {
 	return Gar(dis, p, 15)
 }
 
+// Gar25 returns generalised anti-Robinson violation loss criterion of a permuted distance matrix with window width = 25.
 func Gar25(dis Matrix64, p IntVector) float64 {
 	return Gar(dis, p, 25)
 }
 
+// Gar37 returns generalised anti-Robinson violation loss criterion of a permuted distance matrix with window width = 37.
 func Gar37(dis Matrix64, p IntVector) float64 {
 	return Gar(dis, p, 37)
 }
 
+// Gar50 returns generalised anti-Robinson violation loss criterion of a permuted distance matrix with window width = 50.
 func Gar50(dis Matrix64, p IntVector) float64 {
 	return Gar(dis, p, 50)
 }
 
+// Gar75 returns generalised anti-Robinson violation loss criterion of a permuted distance matrix with window width = 75.
 func Gar75(dis Matrix64, p IntVector) float64 {
 	return Gar(dis, p, 75)
 }
 
+// Gar112 returns generalised anti-Robinson violation loss criterion of a permuted distance matrix with window width = 112.
 func Gar112(dis Matrix64, p IntVector) float64 {
 	return Gar(dis, p, 112)
 }
 
+// Gar125 returns generalised anti-Robinson violation loss criterion of a permuted distance matrix with window width = 125.
 func Gar125(dis Matrix64, p IntVector) float64 {
 	return Gar(dis, p, 125)
 }
 
+// Gar187 returns generalised anti-Robinson violation loss criterion of a permuted distance matrix with window width = 187.
 func Gar187(dis Matrix64, p IntVector) float64 {
 	return Gar(dis, p, 187)
 }
 
+// Gar250 returns generalised anti-Robinson violation loss criterion of a permuted distance matrix with window width = 250.
 func Gar250(dis Matrix64, p IntVector) float64 {
 	return Gar(dis, p, 250)
 }
 
+// Gar375 returns generalised anti-Robinson violation loss criterion of a permuted distance matrix with window width = 375.
 func Gar375(dis Matrix64, p IntVector) float64 {
 	return Gar(dis, p, 375)
 }
 
-// Rgar returns the relative generalized anti-Robinson loss function for a distance matrix RGAR(w)  (Wu 2010: 773) .
+// Rgar returns relative generalised anti-Robinson violation loss criterion of a permuted distance matrix(Chen 2002; Tien et al. 2008).
 func Rgar(dis Matrix64, p IntVector, w int) float64 {
 	if !dis.IsSymmetric() {
 		panic("distance matrix not symmetric")
@@ -295,59 +309,72 @@ func Rgar(dis Matrix64, p IntVector, w int) float64 {
 	return gar / (float64(n*w*(w-1)) - 2*float64(w)*float64(w*w-1)/3)
 }
 
+// Rgar5 returns relative generalised anti-Robinson violation loss criterion of a permuted distance matrix with window width = 5.
 func Rgar5(dis Matrix64, p IntVector) float64 {
 	return Rgar(dis, p, 5)
 }
 
+// Rgar10 returns relative generalised anti-Robinson violation loss criterion of a permuted distance matrix with window width = 10.
 func Rgar10(dis Matrix64, p IntVector) float64 {
 	return Rgar(dis, p, 10)
 }
 
+// Rgar12 returns relative generalised anti-Robinson violation loss criterion of a permuted distance matrix with window width = 12.
 func Rgar12(dis Matrix64, p IntVector) float64 {
 	return Rgar(dis, p, 12)
 }
 
+// Rgar15 returns relative generalised anti-Robinson violation loss criterion of a permuted distance matrix with window width = 15.
 func Rgar15(dis Matrix64, p IntVector) float64 {
 	return Rgar(dis, p, 15)
 }
 
+// Rgar25 returns relative generalised anti-Robinson violation loss criterion of a permuted distance matrix with window width = 25.
 func Rgar25(dis Matrix64, p IntVector) float64 {
 	return Rgar(dis, p, 25)
 }
 
+// Rgar37 returns relative generalised anti-Robinson violation loss criterion of a permuted distance matrix with window width = 37.
 func Rgar37(dis Matrix64, p IntVector) float64 {
 	return Rgar(dis, p, 37)
 }
 
+// Rgar50 returns relative generalised anti-Robinson violation loss criterion of a permuted distance matrix with window width = 50.
 func Rgar50(dis Matrix64, p IntVector) float64 {
 	return Rgar(dis, p, 50)
 }
 
+// Rgar75 returns relative generalised anti-Robinson violation loss criterion of a permuted distance matrix with window width = 75.
 func Rgar75(dis Matrix64, p IntVector) float64 {
 	return Rgar(dis, p, 75)
 }
 
+// Rgar112 returns relative generalised anti-Robinson violation loss criterion of a permuted distance matrix with window width = 112.
 func Rgar112(dis Matrix64, p IntVector) float64 {
 	return Rgar(dis, p, 112)
 }
 
+// Rgar125 returns relative generalised anti-Robinson violation loss criterion of a permuted distance matrix with window width = 125.
 func Rgar125(dis Matrix64, p IntVector) float64 {
 	return Rgar(dis, p, 125)
 }
 
+// Rgar187 returns relative generalised anti-Robinson violation loss criterion of a permuted distance matrix with window width = 187.
 func Rgar187(dis Matrix64, p IntVector) float64 {
 	return Rgar(dis, p, 187)
 }
 
+// Rgar250 returns relative generalised anti-Robinson violation loss criterion of a permuted distance matrix with window width = 250.
 func Rgar250(dis Matrix64, p IntVector) float64 {
 	return Rgar(dis, p, 250)
 }
 
+// Rgar375 returns relative generalised anti-Robinson violation loss criterion of a permuted distance matrix with window width = 375.
 func Rgar375(dis Matrix64, p IntVector) float64 {
 	return Rgar(dis, p, 375)
 }
 
-// Ham returns the length of the shortest Hamiltonian path (openTSP).
+// Ham returns the loss criterion as the length of the shortest Hamiltonian path (open traveling salesman problem, oTSP) through a permuted distance matrix (Caraux and Pinloche 2005; Hahsler et al. 2008: 4 , Eq. 10; Chen 2002: 2, MS).
 func Ham(dis Matrix64, p IntVector) float64 {
 	if !dis.IsSymmetric() {
 		panic("distance matrix not symmetric")
@@ -435,7 +462,7 @@ func parabolaFit(v Vector64) (c1, c2, c3 float64, err bool) {
 	return
 }
 
-// Par returns the sum of squared residues of fitted parabola.
+// Par sum of squared residues of two parabolas fitted to the rows of a permuted similarity or distance matrix as the loss criterion.
 func Par(sim Matrix64, p IntVector) float64 {
 	if !sim.IsSymmetric() {
 		panic("similarity matrix not symmetric")
@@ -566,7 +593,7 @@ func Par(sim Matrix64, p IntVector) float64 {
 	return loss
 }
 
-// Are returns loss of the permuted matrix according to Kostopoulos & Goulermas
+// Are returns anti-Robinson events violation loss criterion of a permuted distance matrix (Hahsler et al. 2008: 4, Eq. 7, 8; Streng 1991; Streng and Schönfelder 1978; Chen 2002: 2, AR(i)  ; Wu et al. 2010: 773, AR_{n}).
 func Are(dis Matrix64, p IntVector) float64 {
 	if !dis.IsSymmetric() {
 		panic("distance matrix not symmetric")
@@ -598,7 +625,7 @@ func Are(dis Matrix64, p IntVector) float64 {
 	return c
 }
 
-// Ware returns gain of the permuted matrix according to Kostopoulos & Goulermas
+// Ware returns weighted anti-Robinson events violation loss criterion of a permuted distance matrix (Hahsler et al. 2008; Streng 1991; Tien et al. 2008; Streng and Schönfelder 1978; Chen 2002:21, AR(s); Wu et al. 2010: 773, AR_{s}).
 func Ware(dis Matrix64, p IntVector) float64 {
 	if !dis.IsSymmetric() {
 		panic("distance matrix not symmetric")
@@ -632,7 +659,7 @@ func Ware(dis Matrix64, p IntVector) float64 {
 	return c
 }
 
-// Dware returns loss of the permuted matrix according to Kostopoulos & Goulermas
+// Dware returns doubly weighted anti-Robinson violation loss criterion of a permuted distance matrix (Hahsler et al. 2008; Streng 1991; Tien et al. 2008; Chen 2002: 21, AR(w); Wu et al. 2010: 773, AR_{w}).
 func Dware(dis Matrix64, p IntVector) float64 {
 	if !dis.IsSymmetric() {
 		panic("distance matrix not symmetric")

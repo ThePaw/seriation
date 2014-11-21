@@ -139,7 +139,8 @@ func ReadCsvMatrix64(f *os.File) (a Matrix64) {
 			x, err := strconv.ParseFloat(data[i][j], 64)
 			if err != nil {
 				fmt.Print(err)
-				panic("could not convert the string")
+				fmt.Println("could not convert the string #", i, j)
+				//				panic("could not convert the string")
 			}
 			a[i][j] = float64(x)
 		}
@@ -181,9 +182,9 @@ func (a Matrix64) WriteCSV3() {
 	for i, row := range a {
 		for j, _ := range row {
 			if j == 0 {
-				fmt.Printf("%6.3f", a[i][j])
+				fmt.Printf("%.3f", a[i][j])
 			} else {
-				fmt.Printf(",%6.3f", a[i][j])
+				fmt.Printf(",%.3f", a[i][j])
 			}
 		}
 		fmt.Println()
@@ -230,7 +231,7 @@ func (a Matrix64) Print() {
 		}
 		fmt.Println()
 	}
-	fmt.Println()
+//	fmt.Println()
 }
 
 // PrettyString returns a pretty string form of the matrix
