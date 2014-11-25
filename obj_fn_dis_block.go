@@ -2,7 +2,10 @@
 
 package ser
 
-// EffectivenessGain returns gain of the permuted matrix according to Kostopoulos & Goulermas(==MEffGainDis) for block seriation.
+// Objective functions for block seriation of permuted distance matrices.
+// Gain functions.
+
+// Moed returns the Measure of Effectiveness gain of a permuted distance matrix (McCormick 1972) according to Kostopoulos & Goulermas (2014, in preparation), for block seriation.
 func Moed(dis Matrix64, p IntVector) float64 {
 	var a, b, c, d, e float64
 	if !dis.IsSymmetric() {
@@ -44,7 +47,7 @@ func Moed(dis Matrix64, p IntVector) float64 {
 	return sum / 2
 }
 
-// MEffGainDis returns the measure of Effectiveness (McCormick 1972).
+// Moed2 returns the Measure of Effectiveness gain of a permuted distance matrix (McCormick 1972), for block seriation.
 func Moed2(a Matrix64, p IntVector) float64 {
 	var x0, x1, x2, x3, x4 float64
 	rows := a.Rows()

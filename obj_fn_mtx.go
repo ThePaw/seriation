@@ -2,16 +2,14 @@
 
 package ser
 
-// Objective (loss and gain) functions for mxn data matrices.
+// Objective (loss and gain) functions for m x n data matrices.
 
 import (
-	//	"fmt"
-	"code.google.com/p/go-fn/fn"
 	"math"
 )
 
-// MooreStressLoss returns the Moore Stress criterion (Niermann 2005:42, Eq. 1, 2).
-func MooreStressLoss(mtx Matrix64, rowPerm, colPerm IntVector) float64 {
+// Ms returns the Moore Stress criterion  of a permuted data matrix (Niermann 2005:42, Eq. 1, 2).
+func Ms(mtx Matrix64, rowPerm, colPerm IntVector) float64 {
 	r, c := mtx.Dims()
 	if !(rowPerm.Len() == r && colPerm.Len() == c) {
 		panic("bad dimensions")
@@ -31,8 +29,8 @@ func MooreStressLoss(mtx Matrix64, rowPerm, colPerm IntVector) float64 {
 	return stress
 }
 
-// VonNeumannStressLoss returns the Moore Stress criterion (Niermann 2005:42).
-func VonNeumannStressLoss(mtx Matrix64, rowPerm, colPerm IntVector) float64 {
+// Ns returns the  VonNeumann Stress criterion  of a permuted data matrix (Niermann 2005:42).
+func Ns(mtx Matrix64, rowPerm, colPerm IntVector) float64 {
 	r, c := mtx.Dims()
 	if !(rowPerm.Len() == r && colPerm.Len() == c) {
 		panic("bad dimensions")
@@ -54,113 +52,8 @@ func VonNeumannStressLoss(mtx Matrix64, rowPerm, colPerm IntVector) float64 {
 	return stress
 }
 
-// MEffGain returns the measure of Effectiveness (McCormick 1972).
-func MEffGain(mtx Matrix64, rowPerm, colPerm IntVector) float64 {
-	var x0, x1, x2, x3, x4 float64
-	rows, cols := mtx.Dims()
-
-	if !(rowPerm.Len() == rows && colPerm.Len() == cols) {
-		panic("bad dimensions")
-	}
-	gain := 0.0
-	for i := 0; i < rows; i++ {
-		for j := 0; j < cols; j++ {
-			x0 = mtx[rowPerm[i]][colPerm[j]]
-			if j-1 < 0 {
-				x1 = 0
-			} else {
-				x1 = mtx[rowPerm[i]][colPerm[j-1]]
-			}
-			if j+1 > cols-1 {
-				x2 = 0
-			} else {
-				x2 = mtx[rowPerm[i]][colPerm[j+1]]
-			}
-			if i-1 < 0 {
-				x3 = 0
-			} else {
-				x3 = mtx[rowPerm[i-1]][colPerm[j]]
-			}
-
-			if i+1 > rows-1 {
-				x4 = 0
-			} else {
-
-				x4 = mtx[rowPerm[i+1]][colPerm[j]]
-			}
-			gain += x0 * (x1 + x2 + x3 + x4)
-		}
-	}
-	return gain / 2
-}
-
-// MirrorLoss computes energy E(p) of the permuted matrix according to Miklos (2005:3400), Eqs. 2, 3.
-func MirrorLoss(mtx Matrix64, rowPerm, colPerm IntVector, normalize bool) float64 {
-	// normalize: Eq 3 of Miklos (2005:3400)
-
-	var av float64
-	rows, cols := mtx.Dims()
-	if !(rowPerm.Len() == rows && colPerm.Len() == cols) {
-		panic("bad dimensions")
-	}
-	if normalize {
-		av = 0.0
-		for i := 0; i < rows; i++ {
-			for k := 0; k < cols; k++ {
-				for l := 0; l < cols; l++ {
-					if k < l {
-						av += math.Abs(mtx[rowPerm[i]][colPerm[k]] - mtx[rowPerm[i]][colPerm[l]])
-					}
-				}
-			}
-		}
-
-		for k := 0; k < cols; k++ {
-			for i := 0; i < rows; i++ {
-				for j := 0; j < rows; j++ {
-					if i < j {
-						av += math.Abs(mtx[rowPerm[i]][colPerm[k]] - mtx[rowPerm[j]][colPerm[k]])
-					}
-				}
-			}
-		}
-
-		denom := float64(rows)*fn.BinomCoeff(int64(cols), 2) + float64(cols)*fn.BinomCoeff(int64(rows), 2)
-		av /= denom
-	}
-	loss := 0.0
-
-	//sum #1
-	for i := 0; i < rows; i++ {
-		for j := 0; j < cols-1; j++ {
-			loss += math.Abs(mtx[rowPerm[i]][colPerm[j]] - mtx[rowPerm[i]][colPerm[j+1]])
-		}
-	}
-
-	//sum #2
-	for i := 0; i < rows-1; i++ {
-		for j := 0; j < cols; j++ {
-			loss += math.Abs(mtx[rowPerm[i]][colPerm[j]] - mtx[rowPerm[i+1]][colPerm[j]])
-		}
-	}
-
-	//sum #3
-	for j := 0; j < cols; j++ {
-		loss += (math.Abs(mtx[rowPerm[0]][colPerm[j]]-mtx[rowPerm[1]][colPerm[j]]) + (math.Abs(mtx[rowPerm[rows-2]][colPerm[j]] - mtx[rowPerm[rows-1]][colPerm[j]])))
-	}
-
-	//sum #4
-	for i := 0; i < rows; i++ {
-		loss += (math.Abs(mtx[rowPerm[i]][colPerm[0]]-mtx[rowPerm[i]][colPerm[1]]) + (math.Abs(mtx[rowPerm[i]][colPerm[cols-2]] - mtx[rowPerm[i]][colPerm[cols-1]])))
-	}
-	if normalize {
-		loss /= av
-	}
-	return loss
-}
-
-// PsiLoss computes energy ψ(p) of the permuted similarity matrix according to Podani (1994); see  Miklos (2005), Eq. 4.
-func PsiLoss(mtx Matrix64, rowPerm, colPerm IntVector) float64 {
+// Psi computes energy ψ(p) of a permuted data matrix according to Podani (1994); see  Miklos (2005), Eq. 4.
+func Psi(mtx Matrix64, rowPerm, colPerm IntVector) float64 {
 	rows, cols := mtx.Dims()
 	if !(rowPerm.Len() == rows && colPerm.Len() == cols) {
 		panic("bad dimensions")
@@ -177,9 +70,8 @@ func PsiLoss(mtx Matrix64, rowPerm, colPerm IntVector) float64 {
 	return loss
 }
 
-// BertinLoss2 returns loss of the permuted matrix according to Kostopoulos & Goulermas
-func BertinLoss2(mtx Matrix64, rowPerm, colPerm IntVector) float64 {
-	// Bertin Classification Criterion of Pilhofer 2012: 2509, Eq. 1
+// Ber2 returns loss of a permuted data matrix according to Kostopoulos & Goulermas (in preparation) = Bertin Classification Criterion of Pilhofer 2012: 2509, Eq. 1.
+func Ber2(mtx Matrix64, rowPerm, colPerm IntVector) float64 {
 	n, m := mtx.Dims()
 	sum := 0.0
 	for i := 1; i < n; i++ {
@@ -198,9 +90,8 @@ func BertinLoss2(mtx Matrix64, rowPerm, colPerm IntVector) float64 {
 
 ///////////////////// Untested functions
 
-// BertinGain returns
-func BertinGain(mtx Matrix64, rowPerm, colPerm IntVector) float64 {
-	// B(A) of Pilhofer 2012: 2509, Eq. 1
+// Bg returns  B(A) gain a permuted data matrix of Pilhofer 2012: 2509, Eq. 1.
+func Bg(mtx Matrix64, rowPerm, colPerm IntVector) float64 {
 	n, m := mtx.Dims()
 	sum := 0.0
 	for i := 1; i < n; i++ {
@@ -217,8 +108,8 @@ func BertinGain(mtx Matrix64, rowPerm, colPerm IntVector) float64 {
 	return sum
 }
 
-// BertinLoss returns loss of the permuted matrix according to Kostopoulos & Goulermas MATLAB code
-func BertinLoss(mtx Matrix64, rowPerm, colPerm IntVector) float64 {
+// Ber returns Bertin loss of a permuted data matrix according to Kostopoulos & Goulermas MATLAB code.
+func Ber(mtx Matrix64, rowPerm, colPerm IntVector) float64 {
 	n, m := mtx.Dims()
 	sum := 0.0
 	for i := 1; i < n; i++ {
@@ -249,7 +140,7 @@ func xA(mtx Matrix64, rowPerm, colPerm IntVector) float64 {
 	return sum
 }
 
-// Y(A) of Pilhofer 2012: 2509
+// yA returns Y(A) of Pilhofer 2012: 2509.
 func yA(mtx Matrix64, rowPerm, colPerm IntVector) float64 {
 	n, m := mtx.Dims()
 	sum := 0.0
@@ -265,11 +156,11 @@ func yA(mtx Matrix64, rowPerm, colPerm IntVector) float64 {
 	return sum
 }
 
-// BI(A) of Pilhofer 2012: 2509
+// biA returns BI(A) of Pilhofer 2012: 2509.
 func biA(mtx Matrix64, rowPerm, colPerm IntVector) float64 {
 	n, m := mtx.Dims()
-	b1 := BertinGain(mtx, rowPerm, colPerm)
-	b2 := BertinLoss(mtx, rowPerm, colPerm)
+	b1 := Bg(mtx, rowPerm, colPerm)
+	b2 := Ber(mtx, rowPerm, colPerm)
 	x := xA(mtx, rowPerm, colPerm)
 	y := yA(mtx, rowPerm, colPerm)
 	nm2 := float64(n * n * m * m)
@@ -278,16 +169,15 @@ func biA(mtx Matrix64, rowPerm, colPerm IntVector) float64 {
 
 }
 
-// Bertin Classification Index (BCI) of Pilhofer 2012: 2509, Eq. 2
-func BertinScaledLoss(mtx Matrix64, rowPerm, colPerm IntVector) float64 {
-	b1 := BertinLoss(mtx, rowPerm, colPerm)
+// Bci returns the Bertin Classification Index (BCI) of a permuted data matrix of Pilhofer 2012: 2509, Eq. 2.
+func Bci(mtx Matrix64, rowPerm, colPerm IntVector) float64 {
+	b1 := Ber(mtx, rowPerm, colPerm)
 	b2 := biA(mtx, rowPerm, colPerm)
 	return b1 / b2
 }
 
-// Weighted Bertin Classification Criterion (WBCC) of Pilhofer 2012: 2509  using Hamming distance
-func BertinWeightedHGain(mtx Matrix64, rowPerm, colPerm IntVector) float64 {
-	// B(A) of Pilhofer 2012: 2509, Eq. 1
+// Bwh returns the Weighted Bertin Classification Criterion (WBCC)  of a permuted data matrix of Pilhofer 2012: 2509  using Hamming distance.
+func Bwh(mtx Matrix64, rowPerm, colPerm IntVector) float64 {
 	n, m := mtx.Dims()
 	sum := 0.0
 	for i := 0; i < n; i++ {
@@ -306,9 +196,8 @@ func BertinWeightedHGain(mtx Matrix64, rowPerm, colPerm IntVector) float64 {
 	return sum
 }
 
-// Weighted Bertin Classification Criterion (WBCC) of Pilhofer 2012: 2509  using Euclidean distance
-func BertinWeightedEGain(mtx Matrix64, rowPerm, colPerm IntVector) float64 {
-	// B(A) of Pilhofer 2012: 2509, Eq. 1
+// Bwe returns the Weighted Bertin Classification Criterion (WBCC)  of a permuted data matrix of Pilhofer 2012: 2509  using Euclidean distance.
+func Bwe(mtx Matrix64, rowPerm, colPerm IntVector) float64 {
 	n, m := mtx.Dims()
 	sum := 0.0
 	for i := 0; i < n; i++ {

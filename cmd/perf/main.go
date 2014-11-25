@@ -68,7 +68,8 @@ func main() {
 	}
 
 	switch objf {
-	// distance gain
+
+		// distance gain
 	case "Wrug":
 		objFn = Wrug
 		isLoss = false
@@ -115,27 +116,6 @@ func main() {
 		objFn = Dware
 		isLoss = true
 		isDistFn = true
-	case "Nsd":
-		objFn = Nsd
-		isLoss = true
-		isDistFn = true
-	case "Msd":
-		objFn = Msd
-		isLoss = true
-		isDistFn = true
-		// similarity loss
-	case "Par":
-		objFn = Par
-		isLoss = true
-		isDistFn = false
-	case "Psis":
-		objFn = Psis
-		isLoss = true
-		isDistFn = false
-	case "Bers":
-		objFn = Bers
-		isLoss = true
-		isDistFn = false
 	case "Gar12":
 		objFn = Gar12
 		isLoss = true
@@ -212,7 +192,28 @@ func main() {
 		objFn = Rgar375
 		isLoss = true
 		isDistFn = true
+	case "Nsd":
+		objFn = Nsd
+		isLoss = true
+		isDistFn = true
+	case "Msd":
+		objFn = Msd
+		isLoss = true
+		isDistFn = true
 
+		// similarity loss
+	case "Par":
+		objFn = Par
+		isLoss = true
+		isDistFn = false
+	case "Psis":
+		objFn = Psis
+		isLoss = true
+		isDistFn = false
+	case "Bers":
+		objFn = Bers
+		isLoss = true
+		isDistFn = false
 	}
 
 	// print header
