@@ -1,0 +1,106 @@
+package ser
+// Q seriation, in development
+import (
+	"math"
+)
+
+func ObjFnPerformanceQ(dat Matrix64, objFnQ ObjFnQ, isLoss, isDistFn bool, optMethod, optMethodForImpro OptMethodQ, impro, window, nIter int) (rhoH IntVector, rankH, pOH IntMatrix, rhoMean, rhoStDev, rProp, hitsProp float64) {
+
+	// init
+tries :=20
+	hitsSum := 0.0
+	rhoSum := 0.0
+	rhoM := 0.0
+	rhoStDev = 0.0
+	rSum := 0.0
+	nSamp, nSpec := dat.Dims()
+
+	// alloc slices
+	rhoH = NewIntVector(20)            // rho histogram
+	pOH = NewIntMatrix(nSamp, nSamp)   // pair-order histogram
+	rankH = NewIntMatrix(nSamp, nSamp) // ranks histogram
+	aa := NewMatrix64(nSamp, nSpec)    // sorted data matrix
+	pKnown := NewIntVector(nSamp)      // known permutation of rows
+	pKnown.Order()
+	pr := pKnown.Clone()
+	pc := pKnown.Clone()
+
+	for it := 0; it < nIter; it++ {
+		a := dat.Clone() // essential, because matrix is a pointer!
+		pr.Perm()
+		pc.Perm()
+		//		a.ForceTo01()
+
+
+		// solve for best permutation
+		optMethodQ(a, pr, pc, objFnQ, isLoss)
+
+/*
+
+		// try to improve the solution
+		switch impro {
+		case 0: // no improvement
+		case 1:
+			SegmentOpt(a, p, window, objFn, isLoss)
+		case 2:
+			SubMatOpt(a, p, window, objFn, isLoss, optMethodForImpro)
+		case 3:
+			SwapOpt(a, p, objFn, isLoss)
+		case 4:
+			RobSA3(a, p, objFn, isLoss)
+		case 5:
+			RobFA3(a, p, objFn, isLoss)
+		case 6:
+			// SegmentImpro + SwapOpt
+			SegmentImpro(a, p, window, tries, objFn, isLoss)
+			SwapOpt(a, p, objFn, isLoss)
+		default:
+			// no improvement
+		}
+*/
+		// reverse, if needed
+		rho := reverseIfNeeded2(pr)
+
+		// rank correlation
+		rr := math.Abs(rho)
+		rhoSum += rr
+
+		// add pair-orders to pair-order histogram
+		addToPairOrderHistogram(pr, pOH)
+
+		// add ranks to histogram
+		addToRankHistogram(pr, rankH)
+
+		// add rho to histogram
+		addToRhoHistogram(rr, rhoH)
+
+		// update perfect hits
+		if rr == 1 {
+			hitsSum++
+		}
+
+		// is sorted Coenocline a Q-matrix?
+		for i := 0; i < nSamp; i++ {
+			for j := 0; j < nSpec; j++ {
+				outCC[i][j] = imtx[pr[i]][j]
+			}
+		}
+		if outCC.IsQ() {
+			qSum++
+		}
+
+	}
+
+	// calc mean and st. deviation
+	rhoMean = rhoSum / float64(nIter)
+	rhoStDev /= float64(nIter - 1)
+	rhoStDev = math.Sqrt(rhoStDev)
+
+
+
+	// turn sums to proportions
+	hitsProp = hitsSum / float64(nIter)
+	qProp = qSum / float64(nIter)
+
+	return
+}

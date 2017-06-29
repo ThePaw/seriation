@@ -69,9 +69,9 @@ func SubMatOpt(dis Matrix64, p IntVector, v int, objFn ObjFn, isLoss bool, optMe
 }
 
 // SegmentOpt implements segment optimization by trying all permutations within a segment.
-func SegmentOpt(a Matrix64, p IntVector, v int, objFn ObjFn, isLoss bool) {
+func SegmentOpt(a Matrix64, p IntVector, v int, objFn ObjFn, isLoss bool) float64 {
 	cost := objFn(a, p)
-	// Factorials up to 8.
+	// Factorials up to 10.
 	factorial := []int{
 		1,
 		1,
@@ -82,10 +82,12 @@ func SegmentOpt(a Matrix64, p IntVector, v int, objFn ObjFn, isLoss bool) {
 		720,
 		5040,
 		40320,
+		362880,
+		3628800,
 	}
 
-	if v > 8 {
-		v = 8
+	if v > 10 {
+		v = 10
 	}
 	if v < 4 {
 		v = 4
@@ -118,7 +120,7 @@ func SegmentOpt(a Matrix64, p IntVector, v int, objFn ObjFn, isLoss bool) {
 			}
 			if cost < best {
 				//				fmt.Println("=== IMPROVED ===", cost, best, i, j)
-				// p.Print()
+				//p.Print()
 				improved = true
 				best = cost
 				p.CopyFrom(w)
@@ -136,10 +138,11 @@ func SegmentOpt(a Matrix64, p IntVector, v int, objFn ObjFn, isLoss bool) {
 	//	cost = objFn(a, p)
 	//					p.Print()
 	//				fmt.Println("=== Final cost:  ===", cost)
+	return best
 }
 
 // SwapOpt tries to improve solution by swapping elements.
-func SwapOpt(a Matrix64, p IntVector, objFn ObjFn, isLoss bool) {
+func SwapOpt(a Matrix64, p IntVector, objFn ObjFn, isLoss bool) float64 {
 
 	cost := objFn(a, p)
 	if !isLoss {
@@ -165,15 +168,16 @@ func SwapOpt(a Matrix64, p IntVector, objFn ObjFn, isLoss bool) {
 					p.Print()
 					panic("not a permutation")
 				}
+				// return best		// bad performance
 			}
 		}
 	}
+	return best
 }
 
 // SegmentImpro tries to improve solution by mutation.
-func SegmentImpro(a Matrix64, p IntVector, v int, objFn ObjFn, isLoss bool) {
+func SegmentImpro(a Matrix64, p IntVector, v, maxTries int, objFn ObjFn, isLoss bool) float64 {
 
-	tries := 5
 	if v > p.Len()-1 {
 		v = p.Len() - 1
 	}
@@ -190,7 +194,7 @@ func SegmentImpro(a Matrix64, p IntVector, v int, objFn ObjFn, isLoss bool) {
 	for i := 0; i < n; i++ { // push start of the segment
 		perm.Order() // start with identity permutation
 
-		for j := 0; j < tries; j++ {
+		for j := 0; j < maxTries; j++ {
 			w := p.Clone()
 
 			for k := 0; k < v; k++ {
@@ -215,7 +219,9 @@ func SegmentImpro(a Matrix64, p IntVector, v int, objFn ObjFn, isLoss bool) {
 					p.Print()
 					panic("not a permutation") // should never happen
 				}
+				// return best		// bad performance
 			}
 		}
 	}
+	return best
 }

@@ -7,6 +7,7 @@ import (
 func ObjFnPerformance(sim Matrix64, objFn ObjFn, isLoss, isDistFn bool, optMethod, optMethodForImpro OptMethod3, impro, window, nIter int) (rhoH IntVector, rankH, pOH IntMatrix, rhoMean, rhoStDev, rProp, hitsProp float64) {
 
 	// init
+	tries := 20
 	hitsSum := 0.0
 	rhoSum := 0.0
 	rhoM := 0.0
@@ -51,7 +52,7 @@ func ObjFnPerformance(sim Matrix64, objFn ObjFn, isLoss, isDistFn bool, optMetho
 			RobFA3(a, p, objFn, isLoss)
 		case 6:
 			// SegmentImpro + SwapOpt
-			SegmentImpro(a, p, window, objFn, isLoss)
+			SegmentImpro(a, p, window, tries, objFn, isLoss)
 			SwapOpt(a, p, objFn, isLoss)
 		default:
 			// no improvement
@@ -115,6 +116,7 @@ func ObjFnPerformance(sim Matrix64, objFn ObjFn, isLoss, isDistFn bool, optMetho
 }
 
 func ObjFnPerformancePerm(sim Matrix64, p IntVector, objFn ObjFn, isLoss, isDistFn bool, optMethod, optMethodForImpro OptMethod3, impro, window, nIter int) (rhoH IntVector, rankH, pOH IntMatrix, rhoMean, rhoStDev, rProp, hitsProp float64) {
+	tries := 20
 
 	// init
 	hitsSum := 0.0
@@ -159,7 +161,7 @@ func ObjFnPerformancePerm(sim Matrix64, p IntVector, objFn ObjFn, isLoss, isDist
 			RobFA3(a, p, objFn, isLoss)
 		case 6:
 			// SegmentImpro + SwapOpt
-			SegmentImpro(a, p, window, objFn, isLoss)
+			SegmentImpro(a, p, window, tries, objFn, isLoss)
 			SwapOpt(a, p, objFn, isLoss)
 		default:
 			// no improvement

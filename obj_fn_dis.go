@@ -5,7 +5,9 @@ package ser
 // Objective (loss and gain) functions for distance (dissimilarity) matrices.
 
 import (
+	"fmt"
 	"math"
+	"os"
 )
 
 func f(x, y float64) float64 {
@@ -25,13 +27,12 @@ func g(x, y float64) float64 {
 	return 0
 }
 
-
 // Gain functions
 
 // Wrug within row unweighted gradient (WRUG) gain of a permuted distance matrix (Hubert et al. 2001, Chapter 4; Brusco 2002: 50, Eq. 6, g_{1}(\Psi). It is a gain function.
 func Wrug(dis Matrix64, p IntVector) float64 {
 	if !dis.IsSymmetric() {
-		panic("distance matrix not symmetric")
+		fmt.Fprintln(os.Stderr, "warning: distance matrix is not symmetric")
 	}
 	n := p.Len()
 	if dis.Rows() != n {
@@ -54,7 +55,7 @@ func Wrug(dis Matrix64, p IntVector) float64 {
 // Wrcug returns within row and column unweighted gradient (WRCUG) gain of a permuted distance matrix (Hubert et al. 2001, Chapter 4; Brusco 2002: 50, Eq. 7, g_{2}(\Psi)). It is a gain function.
 func Wrcug(dis Matrix64, p IntVector) float64 {
 	if !dis.IsSymmetric() {
-		panic("distance matrix not symmetric")
+		fmt.Fprintln(os.Stderr, "warning: distance matrix is not symmetric")
 	}
 	n := p.Len()
 	if dis.Rows() != n {
@@ -79,7 +80,7 @@ func Wrcug(dis Matrix64, p IntVector) float64 {
 // Wrwg returns within row weighted gradient (WRWG) gain of a permuted distance matrix (Hubert et al. 2001, Chapter 4; Brusco 2002: 50, Eq. 8, g_{3}(\Psi)). It is a gain function.
 func Wrwg(dis Matrix64, p IntVector) float64 {
 	if !dis.IsSymmetric() {
-		panic("distance matrix not symmetric")
+		fmt.Fprintln(os.Stderr, "warning: distance matrix is not symmetric")
 	}
 	n := p.Len()
 	if dis.Rows() != n {
@@ -102,7 +103,7 @@ func Wrwg(dis Matrix64, p IntVector) float64 {
 // Wrcwg returns within row and column weighted gradient (WRCWG) gain of a permuted distance matrix (Hubert et al. 2001, Chapter 4; Brusco 2002: 50, Eq. 9, g_{4}(\Psi)).  (? approx. -StrengLoss2).  It is a gain function.
 func Wrcwg(dis Matrix64, p IntVector) float64 {
 	if !dis.IsSymmetric() {
-		panic("distance matrix not symmetric")
+		fmt.Fprintln(os.Stderr, "warning: distance matrix is not symmetric")
 	}
 	n := p.Len()
 	if dis.Rows() != n {
@@ -126,8 +127,7 @@ func Wrcwg(dis Matrix64, p IntVector) float64 {
 // H returns Szczotka's gain criterion of a permuted distance matrix (Szczotka 1972; Hubert and Schultz 1976; Brusco and Stahl 2000: 201, Eq. 5, Z_{5} ; Brusco et al. 2008: 507, Eq. 7, h(\psi)). It is a gain function.
 func H(dis Matrix64, p IntVector) float64 {
 	if !dis.IsSymmetric() {
-		panic("distance matrix not symmetric")
-	}
+	fmt.Fprintln(os.Stderr, "warning: distance matrix is not symmetric")	}
 	n := p.Len()
 	if dis.Rows() != n {
 		panic("bad permutation vector length")
@@ -150,7 +150,7 @@ func H(dis Matrix64, p IntVector) float64 {
 // Ine returns the inertia gain criterion of a permuted distance matrix (Caraux and Pinloche 2005; Hahsler et al. 2008: 5, Eq. 11). It is a gain function.
 func Ine(dis Matrix64, p IntVector) float64 {
 	if !dis.IsSymmetric() {
-		panic("distance matrix not symmetric")
+		fmt.Fprintln(os.Stderr, "warning: distance matrix is not symmetric")
 	}
 	n := p.Len()
 	if dis.Rows() != n {
@@ -166,13 +166,12 @@ func Ine(dis Matrix64, p IntVector) float64 {
 	return sum
 }
 
-
 // Loss functions.
 
 // Lsq returns the least squares loss criterion of a permuted distance matrix (Caraux and Pinloche 2005; Hahsler et al. 2008: 5, Eq. 12). It is a loss function.
 func Lsq(dis Matrix64, p IntVector) float64 {
 	if !dis.IsSymmetric() {
-		panic("distance matrix not symmetric")
+		fmt.Fprintln(os.Stderr, "warning: distance matrix is not symmetric")
 	}
 	n := p.Len()
 	if dis.Rows() != n {
@@ -203,7 +202,7 @@ func Nsd(dis Matrix64, p IntVector) float64 {
 // Gar returns generalised anti-Robinson violation loss criterion of a permuted distance matrix (Chen 2002; Tien et al. 2008; Wu et al. 2010: 773, GAR(w)). It is a loss function.
 func Gar(dis Matrix64, p IntVector, w int) float64 {
 	if !dis.IsSymmetric() {
-		panic("distance matrix not symmetric")
+		fmt.Fprintln(os.Stderr, "warning: distance matrix is not symmetric")
 	}
 	n := p.Len()
 	if dis.Rows() != n {
@@ -304,7 +303,7 @@ func Gar375(dis Matrix64, p IntVector) float64 {
 // Rgar returns relative generalised anti-Robinson violation loss criterion of a permuted distance matrix(Chen 2002; Tien et al. 2008). It is a loss function.
 func Rgar(dis Matrix64, p IntVector, w int) float64 {
 	if !dis.IsSymmetric() {
-		panic("distance matrix not symmetric")
+		fmt.Fprintln(os.Stderr, "warning: distance matrix is not symmetric")
 	}
 	n := p.Len()
 	if dis.Rows() != n {
@@ -383,7 +382,7 @@ func Rgar375(dis Matrix64, p IntVector) float64 {
 // Ham returns the loss criterion as the length of the shortest Hamiltonian path (open traveling salesman problem, oTSP) through a permuted distance matrix (Caraux and Pinloche 2005; Hahsler et al. 2008: 4 , Eq. 10; Chen 2002: 2, MS). It is a loss function.
 func Ham(dis Matrix64, p IntVector) float64 {
 	if !dis.IsSymmetric() {
-		panic("distance matrix not symmetric")
+		fmt.Fprintln(os.Stderr, "warning: distance matrix is not symmetric")
 	}
 	n := p.Len()
 	if dis.Rows() != n {
@@ -400,7 +399,7 @@ func Ham(dis Matrix64, p IntVector) float64 {
 // Are returns anti-Robinson events violation loss criterion of a permuted distance matrix (Hahsler et al. 2008: 4, Eq. 7, 8; Streng 1991; Streng and Schönfelder 1978; Chen 2002: 2, AR(i)  ; Wu et al. 2010: 773, AR_{n}). It is a loss function.
 func Are(dis Matrix64, p IntVector) float64 {
 	if !dis.IsSymmetric() {
-		panic("distance matrix not symmetric")
+		fmt.Fprintln(os.Stderr, "warning: distance matrix is not symmetric")
 	}
 	n := p.Len()
 	if dis.Rows() != n {
@@ -432,7 +431,7 @@ func Are(dis Matrix64, p IntVector) float64 {
 // Ware returns weighted anti-Robinson events violation loss criterion of a permuted distance matrix (Hahsler et al. 2008; Streng 1991; Tien et al. 2008; Streng and Schönfelder 1978; Chen 2002:21, AR(s); Wu et al. 2010: 773, AR_{s}). It is a loss function.
 func Ware(dis Matrix64, p IntVector) float64 {
 	if !dis.IsSymmetric() {
-		panic("distance matrix not symmetric")
+		fmt.Fprintln(os.Stderr, "warning: distance matrix is not symmetric")
 	}
 	n := p.Len()
 	if dis.Rows() != n {
@@ -466,7 +465,7 @@ func Ware(dis Matrix64, p IntVector) float64 {
 // Dware returns doubly weighted anti-Robinson violation loss criterion of a permuted distance matrix (Hahsler et al. 2008; Streng 1991; Tien et al. 2008; Chen 2002: 21, AR(w); Wu et al. 2010: 773, AR_{w}). It is a loss function.
 func Dware(dis Matrix64, p IntVector) float64 {
 	if !dis.IsSymmetric() {
-		panic("distance matrix not symmetric")
+		fmt.Fprintln(os.Stderr, "warning: distance matrix is not symmetric")
 	}
 	n := p.Len()
 	if dis.Rows() != n {

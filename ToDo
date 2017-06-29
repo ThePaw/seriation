@@ -1,0 +1,63 @@
+
+=======================================================
+Objective function:  Wrug
+Matrix:  SRand50.csv
+Permutation vector:  PRand50.csv
+=======================================================
+Wrug is ASYMMETRIC!
+41 29 8 0 20 19 34 39 30 48 17 21 37 15 13 2 10 7 43 47 49 16 28 23 44 11 42 46 9 35 18 31 1 32 40 14 6 4 26 5 36 45 33 38 3 25 12 22 24 27 
+Wrug 3456
+REVERSE ORDER:
+27 24 22 12 25 3 38 33 45 36 5 26 4 6 14 40 32 1 31 18 35 9 46 42 11 44 23 28 16 49 47 43 7 10 2 13 15 37 21 17 48 30 39 34 19 20 0 8 29 41 
+Wrug 3270   <---- DIFFERS!
+REVERSE ORDER:
+41 29 8 0 20 19 34 39 30 48 17 21 37 15 13 2 10 7 43 47 49 16 28 23 44 11 42 46 9 35 18 31 1 32 40 14 6 4 26 5 36 45 33 38 3 25 12 22 24 27 
+Wrug 3456    <---- SAME AS ORIGINAL
+=======================================================
+
+
+=======================================================
+Objective function:  Wrwg
+Matrix:  SRand50.csv
+Permutation vector:  PRand50.csv
+=======================================================
+
+41 29 8 0 20 19 34 39 30 48 17 21 37 15 13 2 10 7 43 47 49 16 28 23 44 11 42 46 9 35 18 31 1 32 40 14 6 4 26 5 36 45 33 38 3 25 12 22 24 27 
+Wrwg 1688.6409750105602
+27 24 22 12 25 3 38 33 45 36 5 26 4 6 14 40 32 1 31 18 35 9 46 42 11 44 23 28 16 49 47 43 7 10 2 13 15 37 21 17 48 30 39 34 19 20 0 8 29 41 
+Wrwg 1665.1851835710418
+41 29 8 0 20 19 34 39 30 48 17 21 37 15 13 2 10 7 43 47 49 16 28 23 44 11 42 46 9 35 18 31 1 32 40 14 6 4 26 5 36 45 33 38 3 25 12 22 24 27 
+Wrwg 1688.6409750105602
+=======================================================
+
+Wrcwg IS OK
+Wrcug IS OK
+
+%%%%%%%%%%%%%%%%%%%%%%
+sim.go: some fns are distances!!!
+=======================================================
+install all my sw !!!
+=======================================================
+
+R: install all relevant pkgs (ade4, seriation, vegan,  labdsv, momocs, decostand, wisconsin, ...)
+and download pdf manuals
+=======================================================
+
+cc has PROBLEM! When spec < samp
+./coenocline -n 100 -m 20 -os 1.5 -pm 100 -ps 5 -tm 0.8 -ts 5 -z 1 > cc100x20sp.csv
+
+
+Nei distance is not always symmetric (R:ade4:dist.prop)
+
+Edwards has problems with NaNs.
+Sforza has problems with NaNs.
+Maybe we should always put zeros to the main diagonal
+ 
+Q --> props --> heatmap
+//prop dist matrices -->performance
+Implement(R:ade4:dist.genet)
+
+Implement upper/lower triangle for asymmetric costs.
+		panic("similarity matrix not symmetric") ===> warning
+
+find awk mean std

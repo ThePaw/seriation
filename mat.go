@@ -43,6 +43,17 @@ func (a Matrix64) Cols() int {
 	return len(a[0])
 }
 
+// Get returns the element a[i][j] of a matrix.
+func (a Matrix64) Get(i, j int) float64 {
+	return a[i][j]
+}
+
+// Set sets the element a[i][j] to x.
+func (a Matrix64) Set(i, j int, x float64) {
+	a[i][j] = x
+	return
+}
+
 /*
 // CopyTo copies matrix to an existing matrix.
 func (a Matrix64) CopyTo(targetMat Matrix64) {
@@ -149,7 +160,7 @@ func ReadCsvMatrix64(f *os.File) (a Matrix64) {
 }
 
 /*
-func (m IntMatrix) WriteCSV(f *os.File)  {	// to be implemented
+func (a Matrix64) WriteCSV(f *os.File)  {	// to be implemented
 	write := csv.NewWriter(io.Writer(f))
 	records := // [][]string TO BE IMPLEMENTED
 	nRow, cols := a.Dims()
@@ -231,7 +242,7 @@ func (a Matrix64) Print() {
 		}
 		fmt.Println()
 	}
-//	fmt.Println()
+	//	fmt.Println()
 }
 
 // PrettyString returns a pretty string form of the matrix
@@ -355,7 +366,7 @@ func (a Matrix64) IsSquare() bool {
 // IsSymmetric tests whether the square matrix is symmetric.
 func (a Matrix64) IsSymmetric() bool {
 	if !a.IsSquare() {
-		panic("not a square matrix")
+		fmt.Println("warning: not a square matrix")
 	}
 	nRow, nCol := a.Dims()
 	q := true
@@ -399,7 +410,7 @@ func (a Matrix64) IsQ() bool {
 	return q
 }
 
-// IsR tests whether the square matrix is a R-matrix (Robinson, columnwise).
+// IsR tests whether the square matrix is an R-matrix (Robinson, columnwise).
 // See Kendall, 1971, for definition.
 func (a Matrix64) IsR() bool {
 	q := a.IsSymmetric()
@@ -452,7 +463,7 @@ func (a Matrix64) IntRound() IntMatrix {
 	return out
 }
 
-// SimToDist converts similarity matrix to distance matrix, and vice versa (ad hoc !!!)
+// SimToDist converts similarity matrix to distance matrix, and vice versa 
 func (a Matrix64) SimToDist() {
 	// find max value
 	maxVal := -inf
@@ -471,15 +482,22 @@ func (a Matrix64) SimToDist() {
 	}
 }
 
-// DistToSim converts distance matrix to similarity matrix
+// DistToSim converts distance matrix to similarity matrix. Inspired by Mochihashi and Matsumoto 2002.
 func (a Matrix64) DistToSim(lambda float64) {
-	//To convert distance to similarity value, we
-	//adopt the formula inspired by Mochihashi, and
-	//Matsumoto 2002.
-	//similarity( x , y ) = exp{− λ ⋅ distance( x , y )}
+	// similarity( x , y ) = exp{− λ ⋅ distance( x , y )}
 	for i, row := range a {
 		for j, val := range row {
 			a[i][j] = math.Exp(-lambda * val)
+		}
+	}
+}
+
+// SimToDist2 converts similarity matrix to distance matrix. From R:ade4.
+func (a Matrix64) SimToDist2() {
+	// distance = sqrt(1 - similarity)
+	for i, row := range a {
+		for j, val := range row {
+			a[i][j] = math.Sqrt(1 - val)
 		}
 	}
 }
@@ -526,6 +544,28 @@ func (a Matrix64) Permute(pRow, pCol IntVector) {
 	a.CopyFrom(b)
 }
 
+func (a Matrix64) UnloadCol(j int) Vector64 {
+	n := a.Rows()
+	p := NewVector64(n)
+	for i := 0; i < a.Rows(); i++ {
+		p[i] = a[i][j]
+	}
+	return p
+}
+
+func (a Matrix64) RandomizeCols() {
+	n := a.Cols()
+	b := a.Clone()
+	for i := 0; i < n; i++ {
+		p := NewIntVector(n)
+		p.Perm()
+		for j := 0; j < a.Rows(); j++ {
+			b[j][i] = a[j][p[i]]
+		}
+	}
+	a.CopyFrom(b)
+}
+
 func (a Matrix64) Equals(b Matrix64) bool {
 	r1, c1 := a.Dims()
 	r2, c2 := b.Dims()
@@ -542,6 +582,7 @@ func (a Matrix64) Equals(b Matrix64) bool {
 	return true
 }
 
+// ForceTo01 recalculates a matrix so that minimal value is 0.0 and maximum is 1.0.
 func (a Matrix64) ForceTo01() {
 	// find maximum and minimum
 	max := -inf
@@ -562,6 +603,38 @@ func (a Matrix64) ForceTo01() {
 	for i, row := range a {
 		for j, val := range row {
 			a[i][j] = (val - min) / span
+		}
+	}
+	return
+}
+
+// IsRowProp tests whether rows of data matrix are proportions (compositions), i.e., that rows sum to one.
+func (a Matrix64) IsRowProp() bool {
+	isP := true
+	eps := 1e-4
+L1:
+	for i, row := range a {
+		rowSum := 0.0
+		for j, _ := range row {
+			rowSum += a[i][j]
+		}
+		if math.Abs(rowSum-1) > eps {
+			isP = false
+			break L1
+		}
+	}
+	return isP
+}
+
+// ToZeroOne transforms matrix to 0 - 1 according to given threshold.
+func (a Matrix64) ToZeroOne(threshold float64) {
+	for i, row := range a {
+		for j, _ := range row {
+			if a[i][j] > threshold {
+				a[i][j] = 1
+			} else {
+				a[i][j] = 0
+			}
 		}
 	}
 	return

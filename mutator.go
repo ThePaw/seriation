@@ -68,7 +68,7 @@ func proposePerm(p IntVector) {
 	var a, b, c, d int
 	rows := p.Len()
 
-	n := 14
+	n := 13
 	x := rand.Intn(n)
 
 	switch {

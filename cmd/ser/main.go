@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
+	"time"
 )
 
 func main() {
@@ -15,27 +16,32 @@ func main() {
 		optMethod, optMethodForImpro OptMethod3
 		objFn                        ObjFn
 		isLoss, isDistFn             bool
-		mtxp  = flag.String("m", "R50.csv", "similarity matrix to be seriated")
-		objfp = flag.String("o", "H", "objective function")
-		iterp = flag.Int("i", 1, "number of iterations")
-		seedp = flag.Int64("s", 33, "seed")
 	)
-
-	// ============= Set parameters here: =======================
-
-	method := "RobSA3"
-	impro := 0
-	window := 0
-	improMethod := "RobSA3"
-
-	// =======================================================
+	mtxp := flag.String("f", "sim.csv", "similarity matrix to be seriated")
+	objfp := flag.String("o", "H", "objective function")
+	iterp := flag.Int("i", 1, "number of iterations")
+	methodp := flag.String("m", "RobSA3", "method")
+	improp := flag.Int("p", 0, "improvement type")
+	windowp := flag.Int("w", 0, "window width for improvement")
+	triesp := flag.Int("t", 0, "number of tries for improvement")
+	improMethodp := flag.String("M", "RobSA3", "method   for improvement")
+	seedp := flag.Int64("s", 33, "seed")
+	isDistP := flag.Bool("d", false, "is input dissimilarity matrix?")
+	verboseP := flag.Bool("v", false, "verbose output?")
 
 	flag.Parse()
 
 	matrix := *mtxp
 	objf := *objfp
 	nIter := *iterp
+	method := *methodp
+	impro := *improp
+	window := *windowp
+	tries := *triesp
+	improMethod := *improMethodp
 	seed := *seedp
+	isDist := *isDistP
+	verbose := *verboseP
 
 	file, err := os.Open(matrix) // For read access.
 	if err != nil {
@@ -43,9 +49,15 @@ func main() {
 	}
 
 	a := ReadCsvMatrix64(file)
+	if isDist {
+		a.SimToDist()
+	}
+
 	nSamp := a.Rows()
 
-	p := NewIntVector(nSamp)     
+	b := a.Clone()
+
+	p := NewIntVector(nSamp)
 	p.Order()
 	p.Perm()
 
@@ -67,183 +79,45 @@ func main() {
 		panic("method: unknown")
 	}
 
-	switch objf {
-	// distance gain
-	case "Wrug":
-		objFn = Wrug
-		isLoss = false
-		isDistFn = true
-	case "Wrcug":
-		objFn = Wrcug
-		isLoss = false
-		isDistFn = true
-	case "Wrwg":
-		objFn = Wrwg
-		isLoss = false
-		isDistFn = true
-	case "Wrcwg":
-		objFn = Wrcwg
-		isLoss = false
-		isDistFn = true
-	case "H":
-		objFn = H
-		isLoss = false
-		isDistFn = true
-	case "Ine":
-		objFn = Ine
-		isLoss = false
-		isDistFn = true
+	objFn, isLoss, isDistFn = SelectObjFn(objf)
 
-		// distance loss
-	case "Lsq":
-		objFn = Lsq
-		isLoss = true
-		isDistFn = true
-	case "Ham":
-		objFn = Ham
-		isLoss = true
-		isDistFn = true
-	case "Are":
-		objFn = Are
-		isLoss = true
-		isDistFn = true
-	case "Ware":
-		objFn = Ware
-		isLoss = true
-		isDistFn = true
-	case "Dware":
-		objFn = Dware
-		isLoss = true
-		isDistFn = true
-	case "Nsd":
-		objFn = Nsd
-		isLoss = true
-		isDistFn = true
-	case "Msd":
-		objFn = Msd
-		isLoss = true
-		isDistFn = true
-		// similarity loss
-	case "Par":
-		objFn = Par
-		isLoss = true
-		isDistFn = false
-	case "Psis":
-		objFn = Psis
-		isLoss = true
-		isDistFn = false
-	case "Bers":
-		objFn = Bers
-		isLoss = true
-		isDistFn = false
-	case "Gar12":
-		objFn = Gar12
-		isLoss = true
-		isDistFn = true
-	case "Gar25":
-		objFn = Gar25
-		isLoss = true
-		isDistFn = true
-	case "Gar37":
-		objFn = Gar37
-		isLoss = true
-		isDistFn = true
-	case "Gar50":
-		objFn = Gar50
-		isLoss = true
-		isDistFn = true
-	case "Gar75":
-		objFn = Gar75
-		isLoss = true
-		isDistFn = true
-	case "Gar112":
-		objFn = Gar112
-		isLoss = true
-		isDistFn = true
-	case "Gar125":
-		objFn = Gar125
-		isLoss = true
-		isDistFn = true
-	case "Gar187":
-		objFn = Gar187
-		isLoss = true
-		isDistFn = true
-	case "Gar375":
-		objFn = Gar375
-		isLoss = true
-		isDistFn = true
-	case "Rgar12":
-		objFn = Rgar12
-		isLoss = true
-		isDistFn = true
-	case "Rgar25":
-		objFn = Rgar25
-		isLoss = true
-		isDistFn = true
-	case "Rgar37":
-		objFn = Rgar37
-		isLoss = true
-		isDistFn = true
-	case "Rgar50":
-		objFn = Rgar50
-		isLoss = true
-		isDistFn = true
-	case "Rgar75":
-		objFn = Rgar75
-		isLoss = true
-		isDistFn = true
-	case "Rgar112":
-		objFn = Rgar112
-		isLoss = true
-		isDistFn = true
-	case "Rgar125":
-		objFn = Rgar125
-		isLoss = true
-		isDistFn = true
-	case "Rgar187":
-		objFn = Rgar187
-		isLoss = true
-		isDistFn = true
-	case "Rgar250":
-		objFn = Rgar250
-		isLoss = true
-		isDistFn = true
-	case "Rgar375":
-		objFn = Rgar375
-		isLoss = true
-		isDistFn = true
-
+	if verbose {
+		// print header
+		fmt.Println("=======================================================")
+		fmt.Println("Objective function: ", objf)
+		fmt.Println("Matrix: ", matrix)
+		fmt.Println("Iterations: ", nIter)
+		fmt.Println("Heuristic for search: ", method)
+		fmt.Println("Improvement function #", impro)
+		fmt.Println("Window width for improvement: ", window)
+		fmt.Println("Without SegmentOpt")
+		fmt.Println("Tries for improvement: ", tries)
+		fmt.Println("Heuristic for improvement: ", improMethod)
+		fmt.Println("Seed: ", seed)
+		fmt.Println("=======================================================")
+		fmt.Println()
 	}
-	// print header
-	fmt.Println("=======================================================")
-	fmt.Println("Objective function: ", objf)
-	fmt.Println("Matrix: ", matrix)
-	fmt.Println("Iterations: ", nIter)
-	fmt.Println("Heuristic for search: ", method)
-	fmt.Println("Improvement function #", impro)
-	fmt.Println("Window width for improvement: ", window)
-	fmt.Println("Heuristic for improvement: ", improMethod)
-	fmt.Println("Seed: ", seed)
-	fmt.Println("=======================================================")
-	fmt.Println()
-
 
 	// start with the same conditions
 	rand.Seed(seed)
 
-	bestPerm, success := Seriate(a, objFn, isLoss, isDistFn, optMethod, optMethodForImpro, impro, window, nIter)
+	t0 := time.Now()
+	bestPerm, success := Seriate(a, objFn, isLoss, isDistFn, optMethod, optMethodForImpro, impro, window, tries, nIter)
+	dur := time.Since(t0)
+	sec := dur.Seconds()
 
-	fmt.Println("Best permutation found:")
-	bestPerm.Print()
-	if success {
-		fmt.Println("Sorted matrix is Robinson.")
-	} else {
-		fmt.Println("Sorted matrix is NOT Robinson.")
+	if verbose {
+		if success {
+			fmt.Println("Sorted matrix IS Robinson.")
+		} else {
+			fmt.Println("Sorted matrix is NOT Robinson.")
+		}
+		fmt.Println("seconds: ", sec)
+
+		b.SimToDist()
+		hValue := H(b, bestPerm)
+		fmt.Println("hValue: ", -hValue)
+		fmt.Println("Best permutation that was found:")
 	}
-// Print out seriated matrix
-	fmt.Println()
-	fmt.Println("Seriated matrix:")
-a.Permute(bestPerm, bestPerm)
-a.Print()
-// a.WriteCSV()
+	bestPerm.WriteCSV()
 }

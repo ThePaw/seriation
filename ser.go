@@ -1,81 +1,160 @@
 package ser
 
 import (
+	"fmt"
 )
 
-func Seriate(sim Matrix64, objFn ObjFn, isLoss, isDistFn bool, optMethod, optMethodForImpro OptMethod3, impro, window, nIter int) (bestPerm IntVector, success bool) {
+// Seriate does seriation of a similarity matrix.
+func Seriate(sim Matrix64, objFn ObjFn, isLoss, isDistFn bool, optMethod, optMethodForImpro OptMethod3, impro, window, tries, nIter int) (bestPerm IntVector, success bool) {
+	var (
+		itBestCost, bestCost, cost float64
+	)
 
 	// init
 	nSamp := sim.Rows()
 
 	// alloc slices
-	pKnown := NewIntVector(nSamp) // known permutation
-	pKnown.Order()
-	bestPerm = pKnown.Clone()
-	bestValue := +inf
+	p := NewIntVector(nSamp) // random permutation
+	p.Perm()
+	itBestPerm := p.Clone()
+	bestPerm = p.Clone()
 
+	a := sim.Clone() // essential, because input matrix may be converted to distances!
+	//		a.ForceTo01()
+
+	// if objFn is distance-based, convert similarities to distances
+	if isDistFn {
+		a.SimToDist()
+	}
+
+	// iterate
+	bestCost = +inf
+	bestIt := 0
 	for it := 0; it < nIter; it++ {
-		if success {
-			break
-		}
-		p := pKnown.Clone()
-		a := sim.Clone() // essential, because input matrix may be converted to distances!
+		itBestCost = bestCost
 		p.Perm()
-		//		a.ForceTo01()
-
-		// if objFn is distance-based, convert similarities to distances
-		if isDistFn {
-			a.SimToDist()
-		}
 
 		// solve for best permutation
-		value := optMethod(a, p, objFn, isLoss)
+		cost = optMethod(a, p, objFn, isLoss) // cost inverted inside if !isLoss
 
 		// update if improved
-		if value < bestValue {
-			bestValue = value
-			bestPerm = p
+		if cost < itBestCost {
+			itBestCost = cost
+			itBestPerm.CopyFrom(p)
+			fmt.Println("Iteration ", it+1, "SA:", itBestCost)
+			itBestPerm.Print()
+			//hValue := H(a, itBestPerm)
+			//fmt.Println("hValue(SA): ", -hValue)
+
 		}
 
-		/*		// try to improve the solution
-				switch impro {
-				case 0: // no improvement
-				case 1:
-					SegmentOpt(a, p, window, objFn, isLoss)
-				case 2:
-					SubMatOpt(a, p, window, objFn, isLoss, optMethodForImpro)
-				case 3:
-					SwapOpt(a, p, objFn, isLoss)
-				case 4:
-					RobSA3(a, p, objFn, isLoss)
-				case 5:
-					RobFA3(a, p, objFn, isLoss)
-				case 6:
-					// SegmentImpro + SwapOpt
-					SegmentImpro(a, p, window, objFn, isLoss)
-					SwapOpt(a, p, objFn, isLoss)
-				default:
-					// no improvement
-				}
+		// try to improve the solution
+		p.CopyFrom(itBestPerm)
 
-		if value < bestValue {
-				bestValue = value
-				bestPerm = p
+		switch impro {
+		case 0: // no improvement
+		case 1:
+			SegmentOpt(a, p, window, objFn, isLoss)
+		case 2:
+			SubMatOpt(a, p, window, objFn, isLoss, optMethodForImpro)
+		case 3:
+			SwapOpt(a, p, objFn, isLoss)
+		case 4:
+			RobSA3(a, p, objFn, isLoss)
+		case 5:
+			RobFA3(a, p, objFn, isLoss)
+		case 6:
+			// SegmentImpro + SwapOpt
+			// SegmentImpro
+			cost = SegmentImpro(a, p, window, tries, objFn, isLoss)
+			// update if improved
+			if cost < itBestCost {
+				itBestCost = cost
+				itBestPerm.CopyFrom(p)
+				fmt.Println("Iteration ", it+1, "SegmentImpro: ", itBestCost)
+				itBestPerm.Print()
+				//hValue := H(a, itBestPerm)
+				// fmt.Println("hValue(SegmentImpro): ", -hValue)
+			}
+			// SwapOpt
+			p.CopyFrom(itBestPerm)
+
+			cost = SwapOpt(a, p, objFn, isLoss)
+			// update if improved
+			if cost < itBestCost {
+				itBestCost = cost
+				itBestPerm.CopyFrom(p)
+				fmt.Println("Iteration ", it+1, "SwapOpt: ", itBestCost)
+				itBestPerm.Print()
+				//hValue := H(a, itBestPerm)
+				// fmt.Println("hValue(SwapOpt): ", -hValue)
+			}
+		default:
+			// no improvement
 		}
 
-		*/
 		// reverse, if needed
-		reverseIfNeeded(p)
+		reverseIfNeeded(itBestPerm)
 
-		// is sorted similarity/distance matrix (A)R-matrix?
-		aa := a.Clone()
-		aa.Permute(p, p)
-		if isDistFn {
-			aa.SimToDist()
+		if itBestCost < bestCost {
+			bestIt = it
+			bestPerm.CopyFrom(itBestPerm)
+			bestCost = itBestCost
+
+			//			bestPerm.Print()
+
 		}
-		if aa.IsR() {
+
+		if a.IsR() {
 			success = true
+			break
 		}
-	}
+
+	} // end of iterations
+	hValue := H(a, bestPerm)
+	fmt.Println("Last improvement in iteration ", bestIt+1, "cost: ", bestCost, "hValue: ", -hValue)
 	return
 }
+
+// Cost calculates objective function value for a similarity matrix given its permutation vector.
+func Cost(sim Matrix64, p IntVector, objFn ObjFn, isLoss, isDistFn bool) (cost float64) {
+	a := sim.Clone()
+	if isDistFn {
+		// if objFn is distance-based, convert similarities to distances
+
+		a.SimToDist()
+	}
+
+	cost = objFn(a, p)
+
+	if !isLoss {
+		cost = -cost
+	}
+
+	return
+
+}
+
+// CostRaw calculates objective function value for a similarity matrix.
+func CostRaw(sim Matrix64, objFn ObjFn, isLoss, isDistFn bool) (cost float64) {
+	a := sim.Clone()
+	nSamp := sim.Rows()
+	p := NewIntVector(nSamp)
+	p.Order()
+
+	if isDistFn {
+		// if objFn is distance-based, convert similarities to distances
+
+		a.SimToDist()
+	}
+
+	cost = objFn(a, p)
+
+	if !isLoss {
+		cost = -cost
+	}
+
+	return
+
+}
+

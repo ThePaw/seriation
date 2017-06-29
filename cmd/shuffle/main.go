@@ -10,8 +10,8 @@ import (
 // Permute similarity/distance matrix at random.
 func main() {
 	var (
-		mtxp = flag.String("m", "R50.csv", "square matrix to be permuted")
-		fmtp = flag.String("f", "csv", "output format, either csv or dat")
+		mtxp  = flag.String("f", "R50.csv", "square matrix to be permuted")
+		fmtp  = flag.String("F", "csv", "output format, either csv or dat")
 		seedp = flag.Int64("s", 0, "seed to random number generator")
 	)
 
@@ -28,15 +28,14 @@ func main() {
 	}
 
 	a := ReadCsvMatrix64(file)
-	nSamp := a.Rows()
+	rows, _ := a.Dims()
 
-	p := NewIntVector(nSamp)
-	p.Order()
-	//	fmt.Println("===============Permuted mtx========================================")
-	for i := 0; i < 1; i++ {
-		p.Perm()
-		a.Permute(p, p)
-	}
+	p := NewIntVector(rows)
+	//	q := NewIntVector(cols)
+	p.Perm()
+	//	q.Order()
+	a.Permute(p, p)
+
 	switch outfmt {
 	case "dat":
 		a.Print()

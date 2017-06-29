@@ -1,6 +1,6 @@
 package main
 
-// Program to seriate a square symmetric similarity matrix
+// Program to evaluate the performance of different objective functions for seriation of a square symmetric similarity matrix.
 
 import (
 	. "github.com/ThePaw/seriation"
@@ -69,7 +69,7 @@ func main() {
 
 	switch objf {
 
-		// distance gain
+	// distance gain
 	case "Wrug":
 		objFn = Wrug
 		isLoss = false
@@ -261,5 +261,5 @@ func main() {
 	sec := dur.Seconds()
 	fmt.Println("Summary:")
 	fmt.Println("objF nSamp nIter rhoMean rhoStDev rProp hitsProp rankHitsProp seconds")
-	fmt.Println(objf,nSamp,nIter,rhoMean,rhoStDev,rProp,hitsProp,rankHitsProp,sec)
+	fmt.Println(objf, nSamp, nIter, rhoMean, rhoStDev, rProp, hitsProp, rankHitsProp, sec)
 }

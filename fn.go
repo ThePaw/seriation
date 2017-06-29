@@ -83,7 +83,7 @@ func cube(x float64) float64 {
 	return x * x * x
 }
 
-// Uniform random number.
+// Uniform random integer.
 func unif(low, high int) int {
 	return low + rand.Intn(high-low+1)
 }
@@ -216,7 +216,7 @@ func reverseIfNeeded2(perm IntVector) float64 {
 	return rho
 }
 
-// addToRankHistogram updates
+// addToRankHistogram updates Rank Histogram
 func addToRankHistogram(perm IntVector, h IntMatrix) {
 	smp := len(perm)
 	for i := 0; i < smp; i++ {
@@ -353,5 +353,171 @@ func ProcessTimes() (user, system float64, size uint64) {
 	user = float64(usage.Utime.Sec) + float64(usage.Utime.Usec)/1e6
 	system = float64(usage.Stime.Sec) + float64(usage.Stime.Usec)/1e6
 	size = uint64(uint32(usage.Maxrss))
+	return
+}
+
+func SelectObjFn(objf string) (objFn ObjFn, isLoss, isDistFn bool) {
+
+	switch objf {
+	// distance gain
+	case "Wrug":
+		objFn = Wrug
+		isLoss = false
+		isDistFn = true
+	case "Wrcug":
+		objFn = Wrcug
+		isLoss = false
+		isDistFn = true
+	case "Wrwg":
+		objFn = Wrwg
+		isLoss = false
+		isDistFn = true
+	case "Wrcwg":
+		objFn = Wrcwg
+		isLoss = false
+		isDistFn = true
+	case "H":
+		objFn = H
+		isLoss = false
+		isDistFn = true
+	case "Ine":
+		objFn = Ine
+		isLoss = false
+		isDistFn = true
+
+		// distance loss
+	case "Lsq":
+		objFn = Lsq
+		isLoss = true
+		isDistFn = true
+	case "Ham":
+		objFn = Ham
+		isLoss = true
+		isDistFn = true
+	case "Are":
+		objFn = Are
+		isLoss = true
+		isDistFn = true
+	case "Ware":
+		objFn = Ware
+		isLoss = true
+		isDistFn = true
+	case "Dware":
+		objFn = Dware
+		isLoss = true
+		isDistFn = true
+	case "Nsd":
+		objFn = Nsd
+		isLoss = true
+		isDistFn = true
+	case "Msd":
+		objFn = Msd
+		isLoss = true
+		isDistFn = true
+		// similarity loss
+	case "Par":
+		objFn = Par
+		isLoss = true
+		isDistFn = false
+	case "Psis":
+		objFn = Psis
+		isLoss = true
+		isDistFn = false
+	case "Bers":
+		objFn = Bers
+		isLoss = true
+		isDistFn = false
+	case "Gar12":
+		objFn = Gar12
+		isLoss = true
+		isDistFn = true
+	case "Gar25":
+		objFn = Gar25
+		isLoss = true
+		isDistFn = true
+	case "Gar37":
+		objFn = Gar37
+		isLoss = true
+		isDistFn = true
+	case "Gar50":
+		objFn = Gar50
+		isLoss = true
+		isDistFn = true
+	case "Gar75":
+		objFn = Gar75
+		isLoss = true
+		isDistFn = true
+	case "Gar112":
+		objFn = Gar112
+		isLoss = true
+		isDistFn = true
+	case "Gar125":
+		objFn = Gar125
+		isLoss = true
+		isDistFn = true
+	case "Gar187":
+		objFn = Gar187
+		isLoss = true
+		isDistFn = true
+	case "Gar375":
+		objFn = Gar375
+		isLoss = true
+		isDistFn = true
+	case "Rgar12":
+		objFn = Rgar12
+		isLoss = true
+		isDistFn = true
+	case "Rgar25":
+		objFn = Rgar25
+		isLoss = true
+		isDistFn = true
+	case "Rgar37":
+		objFn = Rgar37
+		isLoss = true
+		isDistFn = true
+	case "Rgar50":
+		objFn = Rgar50
+		isLoss = true
+		isDistFn = true
+	case "Rgar75":
+		objFn = Rgar75
+		isLoss = true
+		isDistFn = true
+	case "Rgar112":
+		objFn = Rgar112
+		isLoss = true
+		isDistFn = true
+	case "Rgar125":
+		objFn = Rgar125
+		isLoss = true
+		isDistFn = true
+	case "Rgar187":
+		objFn = Rgar187
+		isLoss = true
+		isDistFn = true
+	case "Rgar250":
+		objFn = Rgar250
+		isLoss = true
+		isDistFn = true
+	case "Rgar375":
+		objFn = Rgar375
+		isLoss = true
+		isDistFn = true
+
+	}
+	return
+}
+
+func SelectObjFnQ(objf string) (objFnQ ObjFnQ, isLoss, isDistFn bool) {
+
+	switch objf {
+	//  loss
+	case "Psis":
+		objFnQ = Psi
+		isLoss = true
+	default:
+		objFnQ = Psi
+		isLoss = true
+	}
 	return
 }

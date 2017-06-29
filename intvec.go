@@ -1,9 +1,13 @@
 package ser
 
 import (
+	"encoding/csv"
 	"fmt"
+	"io"
 	"math/rand"
+	"os"
 	"sort"
+	"strconv"
 )
 
 type IntVector []int
@@ -64,12 +68,36 @@ func (v IntVector) Perm() {
 	return
 }
 
-func (v IntVector) ReadCSV() {
-	// to be implemented
+// ReadCsvIntVector  reads a vector from an opened CSV file. There must be no spaces between values, just commas.
+func ReadCsvIntVector(f *os.File) (a IntVector) {
+	read := csv.NewReader(io.Reader(f))
+	data, err := read.ReadAll()
+	if err != nil {
+		panic("Failed to read from the CSV File(Maybe the file does not comply to the CSV standard defined in RFC 4180)")
+	}
+	nElem := len(data[0])
+	a = NewIntVector(nElem)
+	for i := 0; i < nElem; i++ {
+		x, err := strconv.ParseFloat(data[0][i], 64)
+		if err != nil {
+			fmt.Print(err)
+			fmt.Println("could not convert the string #", i)
+			//				panic("could not convert the string")
+		}
+		a[i] = int(x)
+	}
+	return
 }
 
 func (v IntVector) WriteCSV() {
-	// to be implemented
+	for i, _ := range v {
+		if i == 0 {
+			fmt.Print(v[i])
+		} else {
+			fmt.Print(",", v[i])
+		}
+	}
+
 }
 
 func (v IntVector) Print() {

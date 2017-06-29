@@ -1,0 +1,96 @@
+package ser
+
+import (
+	"math"
+)
+
+func PropPerformance(dat Matrix64, simFn SimFn, isDistFn bool, nIter int) (sim Matrix64, cost float64) {
+
+	// init
+	tries := 20
+	hitsSum := 0.0
+	rhoSum := 0.0
+	rhoM := 0.0
+	rhoStDev = 0.0
+	rSum := 0.0
+	nSamp := sim.Rows()
+
+	// alloc slices
+	rhoH = NewIntVector(20)            // rho histogram
+	pOH = NewIntMatrix(nSamp, nSamp)   // pair-order histogram
+	rankH = NewIntMatrix(nSamp, nSamp) // ranks histogram
+	aa := NewMatrix64(nSamp, nSamp)    // sorted similarity/distance matrix
+	pKnown := NewIntVector(nSamp)      // known permutation
+	pKnown.Order()
+	p := pKnown.Clone()
+
+	for it := 0; it < nIter; it++ {
+
+		// read data matrix
+		dat := //////////////////////////////////////////// run external command cc
+
+		// calculate (dis)similarities
+
+		// if objFn is distance-based, convert similarities to distances
+		if isDistFn {
+			a.SimToDist()
+		}
+
+// calculate cost, update mean and variance
+
+
+
+		// rank correlation
+		rr := math.Abs(rho)
+
+		// rho sample mean and unbiased (Bessel correction) variance estimates
+		rhoSum += rr
+		rhoDelta := rr - rhoM
+		rhoM += rhoDelta / float64(it+1)
+		rhoStDev += rhoDelta * (rr - rhoM)
+
+		// add pair-orders to pair-order histogram
+		addToPairOrderHistogram(p, pOH)
+
+		// add ranks to histogram
+		addToRankHistogram(p, rankH)
+
+		// add rho to histogram
+		addToRhoHistogram(rr, rhoH)
+
+		// update perfect hits
+		if p.Equals(pKnown) {
+			hitsSum++
+		}
+
+		// is sorted similarity/distance matrix (A)R-matrix?
+		for i := 0; i < nSamp; i++ {
+			for j := 0; j < nSamp; j++ {
+				aa[i][j] = a[p[i]][p[j]]
+			}
+		}
+
+		if isDistFn {
+			if aa.IsAR() {
+				rSum++
+			}
+		} else {
+			if aa.IsR() {
+				rSum++
+			}
+		}
+		p.Print()
+	}
+
+	// calc mean and st. deviation
+	rhoMean = rhoSum / float64(nIter)
+
+	rhoStDev /= float64(nIter - 1)
+	rhoStDev = math.Sqrt(rhoStDev)
+
+	// calc proportions
+	hitsProp = hitsSum / float64(nIter)
+	rProp = rSum / float64(nIter)
+	return
+}
+
