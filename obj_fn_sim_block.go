@@ -6,7 +6,7 @@ package ser
 
 import (
 	//	"fmt"
-	"code.google.com/p/go-fn/fn"
+	"github.com/ThePaw/go-fn/fn"
 	"math"
 )
 

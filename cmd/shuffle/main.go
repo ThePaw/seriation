@@ -1,7 +1,7 @@
 package main
 
 import (
-	. "code.google.com/p/seriation"
+	. "github.com/ThePaw/seriation"
 	"flag"
 	"math/rand"
 	"os"

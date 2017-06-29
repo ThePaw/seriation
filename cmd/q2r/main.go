@@ -3,7 +3,7 @@ package main
 // Program to calculate similarity matrix from data matrix using Kendall's 1971 Theorem I
 
 import (
-	. "code.google.com/p/seriation"
+	. "github.com/ThePaw/seriation"
 	"flag"
 	"fmt"
 	"os"

@@ -3,7 +3,7 @@ package main
 // Program to seriate a square symmetric similarity matrix
 
 import (
-	. "code.google.com/p/seriation"
+	. "github.com/ThePaw/seriation"
 	"flag"
 	"fmt"
 	"math/rand"
